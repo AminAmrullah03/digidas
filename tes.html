@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="/static/css/login.css">
+    <title>Login web</title>
+    <link rel="stylesheet" href="tes.css">
     <link rel="stylesheet" href="cl-icon/css/all.min.css">
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+        const links = document.querySelectorAll(".nav-links li");
+
+        hamburger.addEventListener('click', () => {
+            //Animate Links
+            navLinks.classList.toggle("open");
+            links.forEach(link => {
+                link.classList.toggle("fade");
+            });
+
+            //Hamburger Animation
+            hamburger.classList.toggle("toggle");
+        });
+
+    </script>
 </head>
+
 <body>
     <nav>
         <div class="logo" style="display: flex;align-items: center; ">
@@ -21,7 +40,11 @@
         </div>
         <ul class="nav-links">
             <li><a href="https://www.web-leb.com/code">Home</a></li>
-            <li><a href="https://www.web-leb.com/code">About</a></li>
+            <li><a href="https://www.web-leb.com/code">Solutions</a></li>
+            <li><a href="https://www.web-leb.com/code">Products</a></li>
+            <li><a href="https://www.web-leb.com/code">Services</a></li>
+            <li><a href="https://www.web-leb.com/code">Contact Us</a></li>
+            <li><button class="login-button" href="https://www.web-leb.com/code">Login</button></li>
         </ul>
     </nav>
     <div class="wrapper">
@@ -39,8 +62,6 @@
                 <input type="password" name="" id="" class="input" placeholder="confirm password">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <button class="submit">Register</button>
-            <p class="footer"><a href="/templates/login.html" class="link">Login</a></p>
         </form>
         <div></div>
         <div class="banner">
@@ -49,4 +70,5 @@
         </div>
     </div>
 </body>
+
 </html>
