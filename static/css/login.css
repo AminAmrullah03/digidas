@@ -8,10 +8,8 @@
 body {
     width: 100vw;
     height: 100vh;
-    background: #081b29;
+    background: #fdfdfd;
     display: grid;
-    justify-content: center;
-    align-content: center;
 }
 
 ::-webkit-input-placeholder {
@@ -118,23 +116,21 @@ body {
     font-weight: 300;
 }
 
-body {
-    overflow-x: hidden;
-}
-
 nav {
     height: 4.5rem;
     width: 100vw;
-    background-color: #131418;
+    background: linear-gradient(to right,#037367 ,#00281f);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     position: fixed;
     z-index: 10;
+
 }
 
 .nak {
     margin-left: 10px;
 }
+
 .logo {
     padding: 1vh 1vw;
     text-align: center;
@@ -159,10 +155,12 @@ nav {
 .nav-links li a {
     text-decoration: none;
     margin: 0 0.7vw;
+    color: #bea42e;
+    font-family: Philosopher;
 }
 
 .nav-links li a:hover {
-    color: #61DAFB;
+    color: #f7f7f7;
 }
 
 .nav-links li {
@@ -209,18 +207,6 @@ nav {
     transition: all ease-in-out 350ms;
 }
 
-/*Styling Hamburger Icon*/
-.hamburger div {
-    width: 30px;
-    height: 3px;
-    background: #f2f5f7;
-    margin: 5px;
-    transition: all 0.3s ease;
-}
-
-.hamburger {
-    display: none;
-}
 
 /*Stying for small screens*/
 @media screen and (max-width: 800px) {
@@ -309,5 +295,17 @@ nav {
 
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
+    -webkit-transform: rotate(45deg) translate(-5px, -6px);
+    -moz-transform: rotate(45deg) translate(-5px, -6px);
+    -ms-transform: rotate(45deg) translate(-5px, -6px);
+    -o-transform: rotate(45deg) translate(-5px, -6px);
 }
 
+.footer {
+    width: 100%;
+    left: 0;
+    right: 0;
+    position: fixed;
+    bottom: 0;
+    background: linear-gradient(to right,#037367 ,#00281f);;
+}  
