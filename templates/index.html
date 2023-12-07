@@ -22,41 +22,28 @@
 </head>
 
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <a class="navbar-brand" href="#"><img src="/static/pic/ppd.png" alt=""
-                        style="max-height: 40px;"></a>
-                <h4><span class="ms-2">DIGIDAS</span></h4>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/templates/index.html"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <a class="nav-link active" aria-current="page" href="/digidas/templates/index.html">Home</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="/digidas/templates/about.html">About</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <button class="btn btn-primary" type="button"  onclick="signup()">Sign Up</button>
+                        <a class="nav-link menu" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-secondary" type="button"  onclick="signin()">Sign In</button>
+                        <a class="nav-link menu" href="#">About</a>
                     </li>
                 </ul>
+                <button class="btn tlogin" type="button"  onclick="signin()">Sign In</button>
             </div>
         </div>
     </nav>
-    <!-- Akhir Navbar -->
 
-    <!-- Carousel -->
     <div class="container">
         <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">

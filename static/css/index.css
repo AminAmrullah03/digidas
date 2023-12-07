@@ -4,6 +4,7 @@ nav {
     background: linear-gradient(to right,#037367 ,#00281f);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
     display: flex;
+    padding-bottom: 50px;
 }
 
 .logo {
@@ -32,9 +33,11 @@ nav {
     font-family: Philosopher;
     color: #bea42e; 
     border-color: #bea42e;
+    width: 80px;
 }
 
 .tlogin:hover {
+  border-color: white;
     color: white;
     }
 
@@ -57,8 +60,22 @@ nav {
 }
 
 .carousel {
-    margin-top: 30px;
-    /* Sesuaikan jarak dengan tinggi Navbar */
+    margin-top: 50px;
+}
+
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  right: 5%; /* Adjust the right value based on your layout */
+  transform: translateY(-50%);
+  z-index: 1; /* Adjust the z-index as needed */
+}
+.carousel-control-prev {
+  position: absolute;
+  top: 50%;
+  right: 5%; /* Adjust the right value based on your layout */
+  transform: translateY(-50%);
+  z-index: 1; /* Adjust the z-index as needed */
 }
 
 
