@@ -9,8 +9,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
-    <script src="/tes.js"></script>
-    <link rel="stylesheet" href="/tes.css">
+    <link rel="stylesheet" href="/static/css/login.css">
 </head>
 
 <body>
@@ -19,7 +18,7 @@
     <div id="stars3"></div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
+            <a class="navbar-brand" href="/"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -34,14 +33,15 @@
                         <a class="nav-link menu" href="#">About</a>
                     </li>
                 </ul>
-                <a class="tlogin" href="/templates/login.html"><button class="btn btn-outline-success tlogin">Login</button></a>
             </div>
         </div>
     </nav>
     <div class="login-page">
         <div class="form">
             <form class="register-form" method="POST">
-                <strong><h2 class="judul">Register</h2></strong>
+                <strong>
+                    <h2 class="judul">Register</h2>
+                </strong>
                 <input type="text" placeholder="Full Name *" required />
                 <input type="text" placeholder="Username *" required />
                 <input type="email" placeholder="Email *" required />
@@ -56,9 +56,19 @@
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
             <form class="login-form" method="post">
-                <strong><h2 class="judul"></i> Login</h2></strong>
+                <strong>
+                    <h2 class="judul"></i> Login</h2>
+                </strong>
                 <input type="text" placeholder="Username" required />
                 <input type="password" placeholder="Password" required />
+                <div class="form-floating">
+                    <select class="form-select drop" id="floatingSelect" aria-label="Floating label select example">
+                        <option selected>Pilih</option>
+                        <option value="1">Santri</option>
+                        <option value="2">Guru</option>
+                    </select>
+                    <label for="floatingSelect" style="background: transparent;">Pilih Status</label>
+                </div>
                 <a class="btni" href="#">
                     <span></span>
                     <span></span>
@@ -67,10 +77,10 @@
                     Sign in
                 </a>
             </form>
+
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/tes.js"></script>
 </body>
 
 </html>
