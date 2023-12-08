@@ -14,9 +14,6 @@
 </head>
 
 <body>
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
@@ -34,44 +31,28 @@
                         <a class="nav-link menu" href="#">About</a>
                     </li>
                 </ul>
-                <a class="tlogin" href="/templates/login.html"><button class="btn btn-outline-success tlogin">Login</button></a>
             </div>
         </div>
     </nav>
     <div class="login-page">
         <div class="form">
-            <form class="register-form" method="POST">
-                <strong><h2 class="judul">Register</h2></strong>
-                <input type="text" placeholder="Full Name *" required />
-                <input type="text" placeholder="Username *" required />
-                <input type="email" placeholder="Email *" required />
-                <input type="password" placeholder="Password *" required />
-                <a class="btni" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Create
-                </a>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
             <form class="login-form" method="post">
-                <strong><h2 class="judul"></i> Login</h2></strong>
-                <input type="text" placeholder="Username" required />
-                <input type="password" placeholder="Password" required />
+                <strong><h2 class="judul">Santri Pulang</h2></strong>
+                <input type="text" placeholder="Nama" required />
+                <input type="text" placeholder="NIS" required />
+                <input type="text" placeholder="Alasan" required />
+                <input type="text" placeholder="Durasi" required />
+                <input type="date" placeholder="Tanggal" required />
                 <a class="btni" href="#">
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
-                    Sign in
-                </a>
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
+                    Tambah </a>
             </form>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/tes.js"></script>
 </body>
 
 </html>
