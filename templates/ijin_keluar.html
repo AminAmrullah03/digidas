@@ -14,29 +14,6 @@
     <link rel="stylesheet" href="/static/css/izin_keluar.css">
 
     <script>
-        function tampilkanPopUpForm() {
-            var popupForm = document.getElementById("popupForm");
-            popupForm.classList.add('is-active');
-        }
-
-        function tutupPopUpForm() {
-            var popupForm = document.getElementById("popupForm");
-            popupForm.classList.remove('is-active');
-        }
-
-        function edit_daftar(id) {
-            tampilkanPopUpForm();
-            var tambahForm = document.getElementById("popupForm");
-            var editForm = document.getElementById("popupEditForm");
-
-            tambahForm.classList.remove('is-active');
-            editForm.classList.add('is-active');
-        }
-
-        function tutupEditForm() {
-            var editForm = document.getElementById("popupEditForm");
-            editForm.classList.remove('is-active');
-        }
 
 
         function izin_keluar() {
@@ -170,7 +147,7 @@
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary" onclick="tampilkanPopUpForm()">
+        <button type="button" class="btn btn-primary">
             <i class="fas fa-plus"></i> Tambah
         </button>
 
@@ -179,123 +156,24 @@
     <!-- Akhir Tabel -->
 
     <!-- Form Tambah -->
-    <div class="modal" id="popupForm">
-        <div class="modal-background" onclick="tutupPopUpForm()"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-
-                <button class="delete" aria-label="close" onclick="tutupPopUpForm()"></button>
-            </header>
-            <section class="modal-card-body">
-                <form class="login-form" method="post">
-                    <strong>
-                        <h2 class="judul">Tambah Data</h2>
-                    </strong>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Nama" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="NIS" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="number" placeholder="NO HP" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Alamat" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Alasan" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="date" id="tanggal_mulai" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="date" id="tanggal_akhir" name="tanggal_akhir" required>
-                    </div>
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <button type="button" class="button is-primary" onclick="izin_keluar()">
-                                <span class="icon is-small">
-                                    <i class="fas fa-plus"></i>
-                                </span>
-                                <span>Tambah</span>
-                            </button>
-                        </p>
-                        <p class="control">
-                            <button type="button" class="button is-danger" onclick="tutupPopUpForm()">
-                                <span class="icon is-small">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                                <span>Cancel</span>
-                            </button>
-                        </p>
-                    </div>
-                </form>
-            </section>
-
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" method="post" action="/tambah_santri">
+                <strong><h2 class="judul">Tambah Santri Izin</h2></strong>
+                <input type="text" placeholder="Nama" name="nama" required />
+                <input type="text" placeholder="NIS" name="nis" required />
+                <input type="number" placeholder="NO HP" name="no_hp" required />
+                <input type="text" placeholder="Alamat" name="alamat" required />
+                <input type="text" placeholder="Alasan" name="Alasan" required />
+                <input type="date" placeholder="" name="" required />
+                <input type="date" placeholder="" name="" required />
+                <button type="submit" class="btni">Tambah</button>
+            </form>
         </div>
     </div>
+    
 
     <!-- Akhir Form Tambah -->
-
-    <!-- Form Edit -->
-
-    <div class="modal" id="popupEditForm">
-        <div class="modal-background" onclick="tutupEditForm()"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <button class="delete" aria-label="close" onclick="tutupEditForm()"></button>
-            </header>
-            <section class="modal-card-body">
-                <form class="edit-form" method="post">
-                    <strong>
-                        <h2 class="judul">Edit Data</h2>
-                    </strong>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Nama" id="editNama" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="NIS" id="editNIS" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="number" placeholder="NO HP" id="editNoHP" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Alamat" id="editAlamat" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="text" placeholder="Alasan" id="editAlasan" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="date" id="editTanggalMulai" required>
-                    </div>
-                    <div class="field">
-                        <input class="input is-primary" type="date" id="editTanggalAkhir" required>
-                    </div>
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <button type="button" class="button is-primary" onclick="simpanPerubahan()">
-                                <span class="icon is-small">
-                                    <i class="fas fa-save"></i>
-                                </span>
-                                <span>Simpan Perubahan</span>
-                            </button>
-                        </p>
-                        <p class="control">
-                            <button type="button" class="button is-danger" onclick="tutupEditForm()">
-                                <span class="icon is-small">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                                <span>Batal</span>
-                            </button>
-                        </p>
-                    </div>
-                </form>
-            </section>
-        </div>
-    </div>
-
-    <!-- Akhir Form Edit -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
