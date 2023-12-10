@@ -226,6 +226,10 @@ nav {
   }
 }
 
+.footer{
+  position: fixed;
+}
+
 /* 
 #stars {
   width: 1px;
