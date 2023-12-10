@@ -14,6 +14,39 @@
     <link rel="stylesheet" href="/static/css/inventaris.css">
     <link rel="stylesheet" href="/static/css/jurnal.css">
 
+    <script>
+        function hapus() {
+            $.ajax({
+                type: "POST",
+                url: "/hapus_absensi2",
+                data: {
+                    
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.href = "absensi2.html"
+                
+                },
+            })
+        }
+
+        function edit(){
+            $.ajax({
+                type: "POST",
+                url: "/edit_absensi2",
+                data: {
+                    
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.href = "absensi2.html"
+
+                }
+            })
+        }
+
+    </script>
+
     <style>
 
         .judul {
@@ -96,29 +129,39 @@
     </nav>
 
 
-    <h1 class="title is-1 has-text-centered mt-4">Jurnal Santri</h1>
-    <p class="subtitle is-4 has-text-centered">Pilih Kelas</p>
-    <div class="container is-align-items-center" style="margin-top: 20px;">
-        <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                aria-describedby="search-addon" />
-            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
-        </div>
-    </div>
+<h1 class="title is-1 has-text-centered mt-4">Kelas 2</h1>
 
-    <div class="container is-align-items-center mt-4">
-        <div class="buttons is-centered">
-            <a href="/templates/absensi1.html" class="button is-primary modal-button">Kelas 1</a>
-            <a href="/templates/absensi2.html" class="button is-primary modal-button">Kelas 2</a>
-            <a href="/templates/absensi3.html" class="button is-primary modal-button">Kelas 3</a>
-        </div>
-    </div>
-
-
-
+<!-- Tabel untuk daftar absensi -->
+<div class="container mt-4">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nama Santri</th>
+                <th scope="col">Status</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Amri</td>
+                <td>Hadir</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="edit()">Edit</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus()">Hapus</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Firman</td>
+                <td>Alpa</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="edit()">Edit</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus()">Hapus</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
     
-
-    <!-- Sisanya modals untuk kelas lainnya -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </body>
@@ -127,7 +170,7 @@
 
 
 
-<footer class="text-center text-lg-start text-white" style="margin-top: 20px;background-color: #3e4551; margin-top: 150px;">
+<footer class="text-center text-lg-start text-white" style="margin-top: 20px;background-color: #3e4551">
     <section class="">
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-4 mb-md-0">

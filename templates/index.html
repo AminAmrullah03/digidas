@@ -9,12 +9,6 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
-
-    <script>
-        function signin() {
-            window.location.href = '/login';
-        }
-    </script>
 </head>
 
 <body>
@@ -29,13 +23,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">Home</a>
+                        <a class="nav-link menu" href="/templates/index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">About</a>
+                        <a class="nav-link menu" href="/templates/about.html">About</a>
                     </li>
                 </ul>
-                <button class="btn tlogin" type="button" onclick="signin()">Sign In</button>
+                <a href="/templates/login.html"><button class="btn tlogin" type="button">Sign In</button></a>
             </div>
         </div>
     </nav>
