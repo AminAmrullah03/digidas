@@ -26,11 +26,11 @@
                 success: function (response) {
                     if (response.result === "success") {
                         // Redirect ke halaman dashboard jika login berhasil
-                        // window.location.href = "/dashboard";
-                        alert('success');
+                        window.location.href = "/dashboard";
+                        alert('Selamat Datang ' + response.nama);
                     } else {
                         // Tampilkan pesan kesalahan jika login gagal
-                        alert(response.msg);
+                        alert('gagal login');
                     }
                 },
                 error: function () {

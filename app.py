@@ -38,30 +38,34 @@ def login():
         elif request.method == 'POST':
             nis = request.form.get('nis')
             password = request.form.get('password')
+            pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
             # print(nis,password)
-            return jsonify({'result': 'success'})
-    #         user = datasantri.find_one({"nis": nis})
+            user = datasantri.find_one({"nis": nis})
+            # print(pw_hash)
+            if user and (user["password"] == pw_hash):
+                print(user['password'], pw_hash)
+                session["user_id"] = str(user["_id"])
+                return jsonify({
+                    'result': 'success',
+                    'user_id': session['user_id'],
+                    'nama': user['nama']
+                    })
+            
+            else:
+                flash("NIS atau password tidak valid.", "danger")
+                return redirect(url_for("home"))
+            
+        return jsonify({'result': 'success'})
 
     # # Cek apakah user ditemukan dan password valid
-    # if user and check_password_hash(user["password"], password):
     #     # Login berhasil, set session dan redirect ke dashboard
-    #     session["user_id"] = str(user["_id"])
-    #     flash("Login berhasil!", "success")
-    #     return redirect(url_for("dashboard"))
-    # else:
-    #     flash("NIS atau password tidak valid.", "danger")
-    #     return redirect(url_for("home"))
     
 @app.route("/dashboard")
 def dashboard():
     user_id = session.get("user_id")
-
-    # Cek apakah user login
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("home"))
-
-    # Ambil user data berdasarkan user_id
     user = datasantri.find_one({"_id": user_id})
 
     # Render template dashboard dengan data user
@@ -78,21 +82,30 @@ def pelanggaran():
 @app.route('/tambah_santri', methods=['GET', 'POST'])
 def tambah_santri():
     if request.method == 'POST':
+        nama = request.form['nama']
+        nis = request.form['nis']
+        jenis_kelamin = request.form['jenis_kelamin']
+        no_hp = request.form['no_hp']
+        alamat = request.form['alamat']
+        raw_password = request.form['password']  # Ambil password mentah dari form
+
+        # Hash password menggunakan SHA-256
+        hashed_password = hashlib.sha256(raw_password.encode()).hexdigest()
+
         data = {
-            'nama': request.form['nama'],
-            'nis': request.form['nis'],
-            'jenis_kelamin': request.form['jenis_kelamin'],
-            'no_hp': request.form['no_hp'],
-            'alamat': request.form['alamat'],
-            'password': request.form['password'],
-            'status': 'santri',  # Set status secara otomatis menjadi 'santri'
+            'nama': nama,
+            'nis': nis,
+            'jenis_kelamin': jenis_kelamin,
+            'no_hp': no_hp,
+            'alamat': alamat,
+            'password': hashed_password,  # Simpan password yang sudah di-hash
+            'status': 'santri',
         }
         datasantri.insert_one(data)
         flash('Data berhasil ditambahkan!', 'success')
         return redirect(url_for('tambah_santri', success=1))
 
     return render_template('tambah_santri.html')
-
 @app.route('/tambah_data', methods=['POST'])
 def tambah_data():
     if request.method == 'POST':
@@ -116,6 +129,11 @@ def data_pelanggaran():
 def hapus_data(id):
     pelanggarans.delete_one({'_id': ObjectId(id)})
     return redirect(url_for('data_pelanggaran'))
+
+@app.route('/jurnal')
+def jurnal():
+    return render_template('jurnal.html')
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
