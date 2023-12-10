@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pelanggaran</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Data Pelanggaran</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nama</th>
+                    <th scope="col">NIS</th>
+                    <th scope="col">Jenis Pelanggaran</th>
+                    <th scope="col">Kategori Pelanggaran</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Aksi</th> <!-- Kolom tambahan untuk tombol aksi -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                    <tr>
+                        <td>{{ entry.nama }}</td>
+                        <td>{{ entry.nis }}</td>
+                        <td>{{ entry.jenis_pelanggaran }}</td>
+                        <td>{{ entry.kategori_pelanggaran }}</td>
+                        <td>{{ entry.tanggal }}</td>
+                        <td>
+                            <!-- Tombol Delete -->
+                            <a href="{{ url_for('hapus_data', id=entry['_id']) }}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-r0I11+wx50j7d5qd5UWUN5z5l3gF5voRNFp4XrQ2gAFGvOV+5y6P8u1q5R0i6bF" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -10,6 +10,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/pelanggaran.css">
+    <script>
+        function tambahData() {
+            // Mendapatkan nilai input dari form
+            var nama = document.querySelector('input[placeholder="Nama"]').value;
+            var nis = document.querySelector('input[placeholder="NIS"]').value;
+            var jenisPelanggaran = document.querySelector('input[placeholder="Jenis Pelanggaran"]').value;
+            var kategoriPelanggaran = document.getElementById('kategoriPelanggaran').value;
+            var tanggal = document.querySelector('input[placeholder="Tanggal"]').value;
+
+            // Membuat string untuk ditambahkan ke hasilInput
+            var dataInput = `<p>Nama: ${nama}</p>
+                            <p>NIS: ${nis}</p>
+                            <p>Jenis Pelanggaran: ${jenisPelanggaran}</p>
+                            <p>Kategori Pelanggaran: ${kategoriPelanggaran}</p>
+                            <p>Tanggal: ${tanggal}</p>`;
+
+            // Menambahkan data ke hasilInput
+            document.getElementById('hasilInput').innerHTML = dataInput;
+        };
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
+            var successParam = new URLSearchParams(window.location.search).get('success');
+
+            // Periksa apakah parameter 'success' ada dan bernilai 1
+            if (successParam === '1') {
+                // Tampilkan pop-up alert jika berhasil
+                alert("Data berhasil ditambahkan!");
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -35,31 +65,27 @@
     </nav>
     <div class="login-page">
         <div class="form">
-            <form class="login-form" method="post">
+            <form class="login-form" method="post" action="{{ url_for('tambah_data') }}">
                 <strong>
                     <h2 class="judul">Pelanggaran Santri</h2>
                 </strong>
-                <input type="text" placeholder="Nama" required />
-                <input type="text" placeholder="NIS" required />
-                <input type="text" placeholder="Jenis Pelanggaran" required />
+                <input type="text" name="nama" placeholder="Nama" required />
+                <input type="text" name="nis" placeholder="NIS" required />
+                <input type="text" name="jenis_pelanggaran" placeholder="Jenis Pelanggaran" required />
                 <div class="form-floating">
-                    <select class="form-select" id="kategoriPelanggaran" required>
+                    <select class="form-select" id="kategoriPelanggaran" name="kategori_pelanggaran" required>
                         <option value="" disabled selected>Pilih Kategori Pelanggaran</option>
                         <option class="drop" value="Ringan">Pelanggaran Ringan</option>
                         <option class="drop" value="Sedang">Pelanggaran Sedang</option>
                         <option class="drop" value="Berat">Pelanggaran Berat</option>
                     </select>
                 </div>
-                <input type="date" placeholder="Tanggal" required />
-                <a class="btni" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Tambah </a>
+                <input type="date" name="tanggal" placeholder="Tanggal" required />
+                <button type="submit" class="btni">Tambah</button>
             </form>
         </div>
     </div>
+    <div id="hasilInput"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 

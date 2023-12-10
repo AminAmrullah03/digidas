@@ -10,6 +10,39 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function handleLogin() {
+            var nis = document.getElementsByName("nis")[0].value;
+            var password = document.getElementsByName("password")[0].value;
+            console.log(nis, password);
+            $.ajax({
+                url: "/login",
+                type: "POST",
+                data: {
+                    nis: nis,
+                    password: password
+                },
+                success: function (response) {
+                    if (response.result === "success") {
+                        // Redirect ke halaman dashboard jika login berhasil
+                        // window.location.href = "/dashboard";
+                        alert('success');
+                    } else {
+                        // Tampilkan pesan kesalahan jika login gagal
+                        alert(response.msg);
+                    }
+                },
+                error: function () {
+                    // Tampilkan pesan kesalahan jika terjadi kesalahan selama permintaan
+                    alert("An error occurred during login.");
+                    console.log(data);
+                }
+            });
+
+            return false;  // Mencegah formulir dikirimkan secara tradisional
+        }
+    </script>
 </head>
 
 <body>
@@ -38,49 +71,22 @@
     </nav>
     <div class="login-page">
         <div class="form">
-            <form class="register-form" method="POST">
-                <strong>
-                    <h2 class="judul">Register</h2>
-                </strong>
-                <input type="text" placeholder="Full Name *" required />
-                <input type="text" placeholder="Username *" required />
-                <input type="email" placeholder="Email *" required />
-                <input type="password" placeholder="Password *" required />
-                <a class="btni" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Create
-                </a>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
-            </form>
-            <form class="login-form" method="post">
+            <form class="login-form" method="post" onsubmit="return handleLogin()">
                 <strong>
                     <h2 class="judul"></i> Login</h2>
                 </strong>
-                <input type="text" placeholder="Username" required />
-                <input type="password" placeholder="Password" required />
-                <div class="form-floating">
-                    <select class="form-select drop" id="floatingSelect" aria-label="Floating label select example">
-                        <option selected>Pilih</option>
-                        <option value="1">Santri</option>
-                        <option value="2">Guru</option>
-                    </select>
-                    <label for="floatingSelect" style="background: transparent;">Pilih Status</label>
-                </div>
-                <a class="btni" href="#">
+                <input type="text" placeholder="NIS" name="nis" required />
+                <input type="password" placeholder="Password" name="password" required />
+                <button type="submit" class="btni">
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
                     Sign in
-                </a>
+                </button>
             </form>
-
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>

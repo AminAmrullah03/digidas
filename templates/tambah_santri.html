@@ -10,6 +10,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/tambah_santri.css">
+    <script>
+        function validatePassword() {
+            var passwordInput = document.getElementById('password');
+            var passwordValue = passwordInput.value;
+            
+            // Regex untuk memastikan password memenuhi syarat
+            var regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            
+            if (!regex.test(passwordValue)) {
+                alert('Password harus terdiri dari setidaknya 8 karakter yang mengandung setidaknya satu huruf dan satu angka.');
+                // Membatalkan pengiriman formulir jika password tidak valid
+                return false;
+            }
+            
+            return true;
+        };
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
+            var successParam = new URLSearchParams(window.location.search).get('success');
+
+            // Periksa apakah parameter 'success' ada dan bernilai 1
+            if (successParam === '1') {
+                // Tampilkan pop-up alert jika berhasil
+                alert("Data berhasil ditambahkan!");
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -35,20 +62,21 @@
     </nav>
     <div class="login-page">
         <div class="form">
-            <form class="login-form" method="post">
+            <form class="login-form" method="post" action="{{ url_for('tambah_santri') }}" onsubmit="return validatePassword()">
                 <strong><h2 class="judul">Tambah Santri</h2></strong>
-                <input type="text" placeholder="Nama" required />
-                <input type="text" placeholder="NIS" required />
-                <input type="text" placeholder="Jenis Kelamin" required />
-                <input type="number" placeholder="NO HP" required />
-                <input type="text" placeholder="Alamat" required />
-                <input type="password" placeholder="Password " required />
-                <a class="btni" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Tambah </a>
+                <input type="text" placeholder="Nama" name="nama" required />
+                <input type="text" placeholder="NIS" name="nis" required />
+                <div class="form-floating">
+                    <select class="form-select" name="jenis_kelamin" required>
+                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                        <option value="Pria">Pria</option>
+                        <option value="Wanita">Wanita</option>
+                    </select>
+                </div>
+                <input type="number" placeholder="NO HP" name="no_hp" required />
+                <input type="text" placeholder="Alamat" name="alamat" required />
+                <input type="password" placeholder="Password" name="password" id="password" required />
+                <button type="submit" class="btni">Tambah</button>
             </form>
         </div>
     </div>
