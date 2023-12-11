@@ -45,7 +45,7 @@
                     success: function (response) {
                         console.log(response);
                         alert("Data berhasil dihapus!");
-                        window.location.reload();  
+                        window.location.reload();
                     },
                     error: function (error) {
                         console.error('Error:', error);
@@ -54,64 +54,77 @@
             }
         }
         function edit_daftar(id) {
+            var formTambah = document.getElementById("formTambah");
+            var btnKembali = document.getElementById("btnKembali");
+
+            // Ganti teks dan handler form
+            document.querySelector('.judul').innerText = 'Edit Inventaris';
+            document.querySelector('.btni').innerText = 'Simpan';
+            document.querySelector('.btni').removeAttribute('onclick');
+            document.querySelector('.btni').addEventListener('click', function () {
+                simpan_edit(id);
+            });
+
+            // Ambil data untuk diedit
+            $.ajax({
+                type: "GET",
+                url: `/get_data_inventaris/${id}`,
+                success: function (response) {
+                    // Isi nilai form dengan data yang diambil
+                    document.getElementById('nama').value = response.nama_barang;
+                    document.getElementById('jumlah').value = response.jumlah;
+                    document.getElementById('kondisi_bagus').value = response.kondisi_bagus;
+                    document.getElementById('kondisi_rusak').value = response.kondisi_rusak;
+
+                    // Tampilkan form
+                    formTambah.style.display = "block";
+                    btnKembali.style.display = "none"; // Sesuaikan kebutuhan Anda
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function simpan_edit(id) {
+            // Ambil nilai dari form
+            var nama_barang = document.getElementById('nama').value;
+            var jumlah = document.getElementById('jumlah').value;
+            var kondisi_bagus = document.getElementById('kondisi_bagus').value;
+            var kondisi_rusak = document.getElementById('kondisi_rusak').value;
+
+            // Lakukan AJAX untuk menyimpan perubahan
+            $.ajax({
+                type: "POST", // Sesuaikan dengan metode yang benar (POST/PUT)
+                url: `/edit_data_inventaris/${id}`,
+                data: {
+                    nama_barang: nama_barang,
+                    jumlah: jumlah,
+                    kondisi_bagus: kondisi_bagus,
+                    kondisi_rusak: kondisi_rusak
+                },
+                success: function (response) {
+                    console.log(response);
+                    alert("Data berhasil diedit!");
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function kembali() {
         var formTambah = document.getElementById("formTambah");
         var btnKembali = document.getElementById("btnKembali");
 
-        // Ganti teks dan handler form
-        document.querySelector('.judul').innerText = 'Edit Inventaris';
-        document.querySelector('.btni').innerText = 'Simpan';
-        document.querySelector('.btni').removeAttribute('onclick');
-        document.querySelector('.btni').addEventListener('click', function () {
-            simpan_edit(id);
-        });
-
-        // Ambil data untuk diedit
-        $.ajax({
-            type: "GET",
-            url: `/get_data_inventaris/${id}`,
-            success: function (response) {
-                // Isi nilai form dengan data yang diambil
-                document.getElementById('nama').value = response.nama_barang;
-                document.getElementById('jumlah').value = response.jumlah;
-                document.getElementById('kondisi_bagus').value = response.kondisi_bagus;
-                document.getElementById('kondisi_rusak').value = response.kondisi_rusak;
-
-                // Tampilkan form
-                formTambah.style.display = "block";
-                btnKembali.style.display = "none"; // Sesuaikan kebutuhan Anda
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    function simpan_edit(id) {
-        // Ambil nilai dari form
-        var nama_barang = document.getElementById('nama').value;
-        var jumlah = document.getElementById('jumlah').value;
-        var kondisi_bagus = document.getElementById('kondisi_bagus').value;
-        var kondisi_rusak = document.getElementById('kondisi_rusak').value;
-
-        // Lakukan AJAX untuk menyimpan perubahan
-        $.ajax({
-            type: "POST", // Sesuaikan dengan metode yang benar (POST/PUT)
-            url: `/edit_data_inventaris/${id}`,
-            data: {
-                nama_barang: nama_barang,
-                jumlah: jumlah,
-                kondisi_bagus: kondisi_bagus,
-                kondisi_rusak: kondisi_rusak
-            },
-            success: function (response) {
-                console.log(response);
-                alert("Data berhasil diedit!");
-                window.location.reload();
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
-        });
+        // Setel kembali formTambah ke tampilan awal
+        formTambah.style.display = "none";
+        btnKembali.style.display = "inline-block"; // Sesuaikan kebutuhan Anda
+        // Reset nilai formulir jika perlu
+        document.getElementById('nama').value = '';
+        document.getElementById('jumlah').value = '';
+        document.getElementById('kondisi_bagus').value = '';
+        document.getElementById('kondisi_rusak').value = '';
     }
     </script>
 </head>
