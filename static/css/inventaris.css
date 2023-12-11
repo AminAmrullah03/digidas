@@ -147,3 +147,14 @@ h2 {
     font-family: Philosopher;
     font-size: x-large;
 }
+
+#blurOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px); /* Ubah nilai sesuai dengan kebutuhan blur */
+    z-index: 99; /* Menempatkan elemen di atas elemen lain */
+    display: none; /* Awalnya disembunyikan */
+}

@@ -10,59 +10,109 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-    <title>Webleb</title>
+    <title>Inventaris</title>
     <link rel="stylesheet" href="/static/css/inventaris.css">
 
     <script>
-
+        function toggleForm() {
+            var formTambah = document.getElementById("formTambah");
+            if (formTambah.style.display === "none") {
+                formTambah.style.display = "block";
+            } else {
+                formTambah.style.display = "none";
+            }
+        }
 
         function tambah_daftar() {
-            $.ajax({
-                type: "POST",
-                url: "/",
-                data: {
-
-                },
-                success: function (response) {
-                    console.log(response);
-                    alert(response);
-                    window.location.href = "inventaris.html";
-                }
-            })
+            var nama_barang = document.querySelector('input[placeholder="Nama Barang"]').value;
+            var jumlah = document.querySelector('input[placeholder="Jumlah"]').value;
+            var kondisi_bagus = document.querySelector('input[placeholder="Kondisi Bagus"]').value;
+            var kondisi_rusak = document.querySelector('input[placeholder="Kondisi Rusak').value;
         }
+        document.addEventListener("DOMContentLoaded", function () {
+            var successParam = new URLSearchParams(window.location.search).get('success');
+            if (successParam === '1') {
+                alert("Data berhasil ditambahkan!");
+            }
+        });
 
         function hapus_daftar(id) {
-            $.ajax({
-                type: "POST",
-                url: '',
-                data: {
-                    id: id 
-                },
-                success: function (response) {
-                    console.log(response.message);
-                    window.location.href = "inventaris.html";
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
+            var konfirmasi = confirm("Apakah Anda yakin ingin menghapus data ini?");
+            if (konfirmasi) {
+                $.ajax({
+                    type: "GET",
+                    url: `/hapus_data_inventaris/${id}`,
+                    success: function (response) {
+                        console.log(response);
+                        alert("Data berhasil dihapus!");
+                        window.location.reload();  
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
         }
+        function edit_daftar(id) {
+        var formTambah = document.getElementById("formTambah");
+        var btnKembali = document.getElementById("btnKembali");
 
+        // Ganti teks dan handler form
+        document.querySelector('.judul').innerText = 'Edit Inventaris';
+        document.querySelector('.btni').innerText = 'Simpan';
+        document.querySelector('.btni').removeAttribute('onclick');
+        document.querySelector('.btni').addEventListener('click', function () {
+            simpan_edit(id);
+        });
 
-        function simpanPerubahan() {
-            $.ajax({
-                type: "POST",
-                url: "/simpanPerubahan",
-                data: {
+        // Ambil data untuk diedit
+        $.ajax({
+            type: "GET",
+            url: `/get_data_inventaris/${id}`,
+            success: function (response) {
+                // Isi nilai form dengan data yang diambil
+                document.getElementById('nama').value = response.nama_barang;
+                document.getElementById('jumlah').value = response.jumlah;
+                document.getElementById('kondisi_bagus').value = response.kondisi_bagus;
+                document.getElementById('kondisi_rusak').value = response.kondisi_rusak;
 
-                },
-                success: function (response) {
-                    console.log(response);
-                    alert(response);
-                    window.location.href = "ijin_keluar.html";
-                }
-            })
-        }
+                // Tampilkan form
+                formTambah.style.display = "block";
+                btnKembali.style.display = "none"; // Sesuaikan kebutuhan Anda
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function simpan_edit(id) {
+        // Ambil nilai dari form
+        var nama_barang = document.getElementById('nama').value;
+        var jumlah = document.getElementById('jumlah').value;
+        var kondisi_bagus = document.getElementById('kondisi_bagus').value;
+        var kondisi_rusak = document.getElementById('kondisi_rusak').value;
+
+        // Lakukan AJAX untuk menyimpan perubahan
+        $.ajax({
+            type: "POST", // Sesuaikan dengan metode yang benar (POST/PUT)
+            url: `/edit_data_inventaris/${id}`,
+            data: {
+                nama_barang: nama_barang,
+                jumlah: jumlah,
+                kondisi_bagus: kondisi_bagus,
+                kondisi_rusak: kondisi_rusak
+            },
+            success: function (response) {
+                console.log(response);
+                alert("Data berhasil diedit!");
+                window.location.reload();
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
     </script>
 </head>
 
@@ -88,7 +138,6 @@
         </div>
     </nav>
 
-    <!-- Tabel -->
     <div class="container">
         <h1 class="title has-text-centered">Inventaris</h1>
         <table class="table caption-top">
@@ -101,111 +150,72 @@
                 </tr>
             </thead>
             <tbody>
+                {% for entry in data %}
                 <tr>
-                    <td>Kursi</td>
-                    <td>15</td>
-                    <td>13</td>
-                    <td>2</td>
+                    <td>{{ entry.nama_barang}}</td>
+                    <td>{{ entry.jumlah}}</td>
+                    <td>{{ entry.kondisi_bagus}}</td>
+                    <td>{{ entry.kondisi_rusak}}</td>
                     <td>
-                        <button type="button" class="btn btn-danger" onclick="hapus_daftar()">
-                            <i class="fas fa-trash"></i> Hapus
+                        <button type="button" class="btn btn-warning" onclick="edit_daftar('{{ entry._id }}')">
+                            <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="edit_daftar(1)">
-                            <i class="fas fa-pen"></i> Edit
+                        <button type="button" class="btn btn-danger" onclick="hapus_daftar('{{ entry._id }}')">
+                            <i class="fas fa-trash"></i> Hapus
                         </button>
                     </td>
                 </tr>
-
-                <tr>
-                    <td>Meja</td>
-                    <td>15</td>
-                    <td>9</td>
-                    <td>6</td>
-                    <td>
-                        <button type="button" class="btn btn-danger" onclick="hapus_daftar()">
-                            <i class="fas fa-trash"></i> Hapus
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="edit_daftar(2)">
-                            <i class="fas fa-pen"></i> Edit
-                        </button>
-                    </td>
-                </tr>
-
+                {% endfor %}
             </tbody>
         </table>
-
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" onclick="toggleForm()">
             <i class="fas fa-plus"></i> Tambah
         </button>
-
     </div>
 
-    <!-- Akhir Tabel -->
-
-    <!-- Form Tambah -->
-    <div class="login-page">
+    <div class="login-page" id="formTambah" style="display:none;">
         <div class="form">
             <form class="login-form" method="post" action="/tambah_daftar">
-                <strong><h2 class="judul">Tambah Inventaris</h2></strong>
-                <input type="text" placeholder="Nama Barang" name="nama" required />
-                <input type="number" placeholder="Jumlah" name="jumlah" required />
-                <input  type="number" placeholder="Kondisi Bagus"  required />
-                <input type="number" placeholder="Kondisi Rusak"  required />
+                <strong>
+                    <h2 class="judul">Tambah Inventaris</h2>
+                </strong>
+                <input type="text" placeholder="Nama Barang" id="nama" name="nama_barang" required />
+                <input type="number" placeholder="Jumlah" id="jumlah" name="jumlah" required />
+                <input type="number" placeholder="Kondisi Bagus" id="kondisi_bagus" name="kondisi_bagus" required />
+                <input type="number" placeholder="Kondisi Rusak" id="kondisi_rusak" name="kondisi_rusak" required />
                 <button type="submit" class="btni" onclick="tambah_daftar()">Tambah</button>
+                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
             </form>
         </div>
     </div>
-    
-    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551">
-        <!-- Grid container -->
-            <!-- Section: Links -->
-            <section class="">
-                <!--Grid row-->
-                <div class="row">
-                    <!--Grid column-->
-                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
 
-                        <p>
-                            <li>Alfin Gunawan</li>
-                            <li>Ahmad Amin Amrullah</li>
-                            <li>Bryan Nathanael Tutuhatunewa</li>
-                            <li>Daffara Chairunnisa Zhuliani</li>
-                        </p>
-                    </div>
-                    <!--Grid column-->
+    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551;">
+        <section class="">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <p>
+                        <li>Alfin Gunawan</li>
+                        <li>Ahmad Amin Amrullah</li>
+                        <li>Bryan Nathanael Tutuhatunewa</li>
+                        <li>Daffara Chairunnisa Zhuliani</li>
+                    </p>
                 </div>
-                <!--Grid row-->
-            </section>
-            <!-- Section: Links -->
-
-            <hr class="mb-4" />
-
-            <!-- Section: Social media -->
-            <section class="mb-4 text-center">
-                <!-- Facebook -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                        class="fab fa-facebook"></i>
-                </a>
-
-                <!-- Instagram -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                        class="fab fa-instagram"></i></a>
-
-                <!-- Github -->
-                <a class="btn btn-outline-light btn-floating m-1"
-                    href="https://github.com/AminAmrullah03/digidas.git" role="button"><i
-                        class="fab fa-github"></i></a>
-            </section>
-            <!-- Section: Social media -->
+            </div>
+        </section>
+        <hr class="mb-4" />
+        <section class="mb-4 text-center">
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                    class="fab fa-instagram"></i></a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
+                role="button"><i class="fab fa-github"></i></a>
+        </section>
         </div>
-        <!-- Grid container -->
-
-        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
             © 2023 Copyright:
             <a class="text-white" href="#">DIGIDAS</a>
         </div>
-        <!-- Copyright -->
     </footer>
 
 

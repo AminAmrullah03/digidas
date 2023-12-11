@@ -1,10 +1,16 @@
 nav {
     height: 4.5rem;
     width: 100vw;
-    background: linear-gradient(to right,#037367 ,#00281f);
+    background: linear-gradient(to right,#0b9c8e ,#034d3d);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     padding-bottom: 50px;
+}
+
+body {
+  background-image: url(/static/pic/bg.png) ;
+  background-size: 100px;
+  background-repeat: repeat;
 }
 /* body {
   font-family: 'Poppins', sans-serif;
