@@ -19,6 +19,39 @@
                 formTambah.style.display = "none";
             }
         }
+        function kembali() {
+            var formTambah = document.getElementById("formTambah");
+            var btnKembali = document.getElementById("btnKembali");
+
+            // Setel kembali formTambah ke tampilan awal
+            formTambah.style.display = "none";
+            btnKembali.style.display = "inline-block";
+        }
+        function tambahData() {
+            // Mendapatkan nilai input dari form
+            var nama = document.querySelector('input[placeholder="Nama"]').value;
+            var jenisKelamin = document.getElementById('JenisKelamin').value;
+            var tanggal = document.querySelector('input[placeholder="Tanggal"]').value;
+            var status= document.getElementById('Status').value;
+
+            // Membuat string untuk ditambahkan ke hasilInput
+            var dataInput = `<p>Nama: ${nama}</p>
+                            <p>Jenis kelamin: ${jenisKelamin}</p>
+                            <p>Tanggal: ${tanggal}</p>
+                            <p>Status: ${status}</p>`;
+            // Menambahkan data ke hasilInput
+            document.getElementById('hasilInput').innerHTML = dataInput;
+        };
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
+            var successParam = new URLSearchParams(window.location.search).get('success');
+
+            // Periksa apakah parameter 'success' ada dan bernilai 1
+            if (successParam === '1') {
+                // Tampilkan pop-up alert jika berhasil
+                alert("Data berhasil ditambahkan!");
+            }
+        });
     </script>
 </head>
 
@@ -44,27 +77,24 @@
         </div>
     </nav>
     <div class="container">
-        <h1 class="title has-text-centered">Inventaris</h1>
+        <h1 class="title has-text-centered">Mutasi Santri</h1>
         <table class="table caption-top">
             <thead>
                 <tr>
-                    <th scope="col">Nama Barang</th>
-                    <th scope="col">Jumlah</th>
-                    <th scope="col">Kondisi Bagus</th>
-                    <th scope="col">Kondisi Rusak</th>
+                    <th scope="col">Nama Santri</th>
+                    <th scope="col">Jenis Kelamin</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for entry in data %}
                 <tr>
-                    <td>{{ entry.nama_barang}}</td>
-                    <td>{{ entry.jumlah}}</td>
-                    <td>{{ entry.kondisi_bagus}}</td>
-                    <td>{{ entry.kondisi_rusak}}</td>
+                    <td>{{ entry.nama}}</td>
+                    <td>{{ entry.jenis_kelamin}}</td>
+                    <td>{{ entry.tanggal}}</td>
+                    <td>{{ entry.status}}</td>
                     <td>
-                        <button type="button" class="btn btn-warning" onclick="edit_daftar('{{ entry._id }}')">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
                         <button type="button" class="btn btn-danger" onclick="hapus_daftar('{{ entry._id }}')">
                             <i class="fas fa-trash"></i> Hapus
                         </button>
@@ -77,35 +107,30 @@
             <i class="fas fa-plus"></i> Tambah
         </button>
     </div>
-    <div class="login-page" id="formTambah" style="display:none;">
+    <div class="login-page" id="formTambah" style="display:none;" >
         <div class="form">
-            <form class="login-form" method="post">
+            <form class="login-form" method="post" action="/tambah_mutasi">
                 <strong>
                     <h2 class="judul">Mutasi</h2>
                 </strong>
-                <input type="text" placeholder="Nama Santri" required />
+                <input type="text" id="nama" name="nama" placeholder="Nama" required />
                 <div class="form-floating">
-                    <select class="form-select" id="JenisKelamin" required>
+                    <select class="form-select" id="JenisKelamin" name="jenis_kelamin" required>
                         <option value="" disabled selected>Jenis Kelamin</option>
-                        <option class="drop" value="Ringan">Laki-laki</option>
-                        <option class="drop" value="Sedang">Perempuan</option>
+                        <option class="drop" value="Laki-laki">Laki-laki</option>
+                        <option class="drop" value="Perempuan">Perempuan</option>
                     </select>
                 </div>
-                <input type="date" placeholder="Tanggal" required />
+                <input type="date" id="Tanggal" name="tanggal" placeholder="Tanggal" required />
                 <div class="form-floating">
-                    <select class="form-select" id="Status" required>
+                    <select class="form-select" name="status" id="Status" required>
                         <option value="" disabled selected>Status</option>
                         <option class="drop" value="Ringan">Masuk</option>
                         <option class="drop" value="Sedang">Keluar</option>
                     </select>
                 </div>
-
-                <a class="btni" href="#">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Tambah </a>
+                <button type="submit" class="btni" onclick="tambah_daftar()">Tambah</button>
+                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
             </form>
         </div>
     </div>
