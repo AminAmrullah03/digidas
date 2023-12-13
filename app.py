@@ -72,6 +72,10 @@ def dashboard():
 def about():
     return render_template("about.html")
 
+@app.route("/pendataan")
+def pendataan():
+    return render_template("pendataan_santri.html")
+
 @app.route("/profile")
 def profile():
     user_id = session.get("user_id")

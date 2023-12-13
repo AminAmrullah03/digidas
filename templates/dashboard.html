@@ -25,10 +25,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/index.html">Home</a>
+                        <a class="nav-link menu" href="home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/about.html">About</a>
+                        <a class="nav-link menu" href="about">About</a>
                     </li>
                 </ul>
                 <a href="/login"><button class="btn tlogin" type="button">Sign In</button></a>
@@ -57,8 +57,8 @@
             <div id="nav-footer-heading">
                 <div id="nav-footer-avatar"><img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547" />
                 </div>
-                <div id="nav-footer-titlebox"><a id="nav-footer-title" href="#"
-                        target="_blank">Staff</a><span id="nav-footer-subtitle">Admin</span></div>
+                <div id="nav-footer-titlebox"><a id="nav-footer-title" href="#" target="_blank">Staff</a><span
+                        id="nav-footer-subtitle">Admin</span></div>
                 <label for="nav-footer-toggle"><i class="fas fa-caret-up"></i></label>
             </div>
             <div id="nav-footer-content">
@@ -70,32 +70,44 @@
 
     <h1>Dashboard</h1>
     <div class="container">
-        <figure>
-            <img src="/static/pic/Pendataan.png" alt="Pendataan" href="#">
-            <figcaption>Pendataan Santri</figcaption>
-        </figure>
-        <figure>
-            <img src="/static/pic/inventaris.png" alt="Inventaris" href="inventaris.html">
-            <figcaption>Inventaris Pesantren</figcaption>
-        </figure>
-        <figure>
-            <img src="/static/pic/Mutasi.png" alt="Mutasi" href="mutasi.html">
-            <figcaption>Mutasi</figcaption>
-        </figure>
+        <a href="pendataan" style="text-decoration:none;">
+            <figure>
+                <img src="/static/pic/Pendataan.png" alt="Pendataan" href="pendataan">
+                <figcaption>Pendataan Santri</figcaption>
+            </figure>
+        </a>
+        <a href="inventaris" style="text-decoration:none;">
+            <figure>
+                <img src="/static/pic/inventaris.png" alt="Inventaris" href="inventaris.html">
+                <figcaption>Inventaris Pesantren</figcaption>
+            </figure>
+        </a>
+        <a href="mutasi" style="text-decoration:none;">
+            <figure>
+                <img src="/static/pic/Mutasi.png" alt="Mutasi" href="mutasi.html">
+                <figcaption>Mutasi</figcaption>
+            </figure>
+        </a>
     </div>
     <div class="container">
-        <figure>
-            <img src="/static/pic/jurnal.png" alt="Jurnal" href="jurnal.html">
-            <figcaption>Jurnal</figcaption>
-        </figure>
+        <a href="jurnal.html" style="text-decoration:none;">
+            <figure>
+                <img src="/static/pic/jurnal.png" alt="Jurnal" href="jurnal.html">
+                <figcaption>Jurnal</figcaption>
+            </figure>
+        </a>
+        <a href="target" style="text-decoration:none;">
         <figure>
             <img src="/static/pic/Target.png" alt="Target" href="target.html">
             <figcaption>Target</figcaption>
         </figure>
+        </a>
+        <a href="pengumuman" style="text-decoration:none;">
         <figure>
             <img src="/static/pic/Pengumuman.png" alt="Pengumuman" href="pengumuman.html">
-            <figcaption>Pengumuman</figcaption>
+            <figcaption style="font-size: 2rem;">Pengumuman</figcaption>
         </figure>
+        </a>
     </div>
 
 </body>
