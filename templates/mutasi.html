@@ -11,44 +11,9 @@
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/mutasi.css">
     <script>
-        function toggleForm() {
-            var formTambah = document.getElementById("formTambah");
-            if (formTambah.style.display === "none") {
-                formTambah.style.display = "block";
-            } else {
-                formTambah.style.display = "none";
-            }
-        }
-        function kembali() {
-            var formTambah = document.getElementById("formTambah");
-            var btnKembali = document.getElementById("btnKembali");
-
-            // Setel kembali formTambah ke tampilan awal
-            formTambah.style.display = "none";
-            btnKembali.style.display = "inline-block";
-        }
-        function tambahData() {
-            // Mendapatkan nilai input dari form
-            var nama = document.querySelector('input[placeholder="Nama"]').value;
-            var jenisKelamin = document.getElementById('JenisKelamin').value;
-            var tanggal = document.querySelector('input[placeholder="Tanggal"]').value;
-            var status= document.getElementById('Status').value;
-
-            // Membuat string untuk ditambahkan ke hasilInput
-            var dataInput = `<p>Nama: ${nama}</p>
-                            <p>Jenis kelamin: ${jenisKelamin}</p>
-                            <p>Tanggal: ${tanggal}</p>
-                            <p>Status: ${status}</p>`;
-            // Menambahkan data ke hasilInput
-            document.getElementById('hasilInput').innerHTML = dataInput;
-        };
         document.addEventListener("DOMContentLoaded", function () {
-            // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
             var successParam = new URLSearchParams(window.location.search).get('success');
-
-            // Periksa apakah parameter 'success' ada dan bernilai 1
             if (successParam === '1') {
-                // Tampilkan pop-up alert jika berhasil
                 alert("Data berhasil ditambahkan!");
             }
         });

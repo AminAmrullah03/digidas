@@ -56,16 +56,12 @@
         function edit_daftar(id) {
             var formTambah = document.getElementById("formTambah");
             var btnKembali = document.getElementById("btnKembali");
-
-            // Ganti teks dan handler form
             document.querySelector('.judul').innerText = 'Edit Inventaris';
             document.querySelector('.btni').innerText = 'Simpan';
             document.querySelector('.btni').removeAttribute('onclick');
             document.querySelector('.btni').addEventListener('click', function () {
                 simpan_edit(id);
             });
-
-            // Ambil data untuk diedit
             $.ajax({
                 type: "GET",
                 url: `/get_data_inventaris/${id}`,
@@ -87,15 +83,12 @@
         }
 
         function simpan_edit(id) {
-            // Ambil nilai dari form
             var nama_barang = document.getElementById('nama').value;
             var jumlah = document.getElementById('jumlah').value;
             var kondisi_bagus = document.getElementById('kondisi_bagus').value;
             var kondisi_rusak = document.getElementById('kondisi_rusak').value;
-
-            // Lakukan AJAX untuk menyimpan perubahan
             $.ajax({
-                type: "POST", // Sesuaikan dengan metode yang benar (POST/PUT)
+                type: "POST",
                 url: `/edit_data_inventaris/${id}`,
                 data: {
                     nama_barang: nama_barang,
@@ -116,11 +109,7 @@
         function kembali() {
         var formTambah = document.getElementById("formTambah");
         var btnKembali = document.getElementById("btnKembali");
-
-        // Setel kembali formTambah ke tampilan awal
         formTambah.style.display = "none";
-        btnKembali.style.display = "inline-block"; // Sesuaikan kebutuhan Anda
-        // Reset nilai formulir jika perlu
         document.getElementById('nama').value = '';
         document.getElementById('jumlah').value = '';
         document.getElementById('kondisi_bagus').value = '';
@@ -150,7 +139,6 @@
             </div>
         </div>
     </nav>
-
     <div class="container">
         <h1 class="title has-text-centered">Inventaris</h1>
         <table class="table caption-top">
@@ -170,7 +158,7 @@
                     <td>{{ entry.kondisi_bagus}}</td>
                     <td>{{ entry.kondisi_rusak}}</td>
                     <td>
-                        <button type="button" class="btn btn-warning" onclick="edit_daftar('{{ entry._id }}')">
+                        <button type="button" class="btn btn-secondary" onclick="edit_daftar('{{ entry._id }}')">
                             <i class="fas fa-edit"></i> Edit
                         </button>
                         <button type="button" class="btn btn-danger" onclick="hapus_daftar('{{ entry._id }}')">
@@ -185,7 +173,6 @@
             <i class="fas fa-plus"></i> Tambah
         </button>
     </div>
-
     <div class="login-page" id="formTambah" style="display:none;">
         <div class="form">
             <form class="login-form" method="post" action="/tambah_daftar">
@@ -201,7 +188,7 @@
             </form>
         </div>
     </div>
-
+    <br><br>
     <footer class="text-center text-lg-start text-white" style="background-color: #3e4551;">
         <section class="">
             <div class="row">
@@ -230,7 +217,6 @@
             <a class="text-white" href="#">DIGIDAS</a>
         </div>
     </footer>
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

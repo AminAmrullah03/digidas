@@ -27,12 +27,8 @@
             return true;
         };
         document.addEventListener("DOMContentLoaded", function () {
-            // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
             var successParam = new URLSearchParams(window.location.search).get('success');
-
-            // Periksa apakah parameter 'success' ada dan bernilai 1
             if (successParam === '1') {
-                // Tampilkan pop-up alert jika berhasil
                 alert("Data berhasil ditambahkan!");
             }
         });
@@ -69,7 +65,7 @@
                 <div class="form-floating">
                     <select class="form-select" name="jenis_kelamin" required>
                         <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                        <option value="Pria">Pria</option>
+                        <option value="Pria">Laki-Laki</option>
                         <option value="Wanita">Wanita</option>
                     </select>
                 </div>

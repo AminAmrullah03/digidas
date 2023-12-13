@@ -21,6 +21,9 @@ pindahan = db['pindahan']
 pelanggarans = db['pelanggarans']
 datasantri = db['datasantri']
 datainv = db['datainv']
+datapulang = db['pulang']
+dataizin = db['izin']
+targets = db['target']
 
 app = Flask(__name__)
 app.secret_key = 'hello_print'
@@ -71,7 +74,19 @@ def about():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    user_id = session.get("user_id")
+
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("home"))
+
+    user_data = datasantri.find_one({"_id": ObjectId(user_id)})
+
+    if user_data:
+        return render_template("profile.html", user=user_data)
+    else:
+        flash("Data santri tidak ditemukan.", "danger")
+        return redirect(url_for("home"))
 
 @app.route("/inventaris")
 def inventaris():
@@ -189,6 +204,111 @@ def tambah_mutasi():
         }
         pindahan.insert_one(data)
         return redirect(url_for('mutasi', success=1))
+    
+@app.route('/santri_pulang')
+def santri_pulang():
+    return render_template('santri_pulang.html')
+
+@app.route('/data_pulang')
+def data_pulang():
+    data = datapulang.find()
+    return render_template('data_pulang.html', data=data)
+
+@app.route('/tambah_pulang', methods=['POST'])
+def tambah_pulang():
+    if request.method == 'POST':
+        data = {
+            'nama': request.form['nama'],
+            'nis': request.form['nis'],
+            'alasan': request.form['alasan'],
+            'durasi': request.form['durasi'],
+            'tanggal': request.form['tanggal'],
+            'penjemput': request.form['penjemput'],
+            'status_penjemput': request.form['status_penjemput'],
+            'pemberi_izin': request.form['pemberi_izin'],
+        }
+        datapulang.insert_one(data)
+        return redirect(url_for('santri_pulang', success=1))
+
+@app.route('/pengumuman')
+def pengumuman():
+    return render_template('/pengumuman.html')
+
+@app.route('/izin_keluar')
+def izin_keluar():
+    return render_template('izin_keluar.html')
+
+@app.route('/tambah_keluar', methods=['POST'])
+def tambah_keluar():
+    if request.method == 'POST':
+        data = {
+            'nama': request.form['nama'],
+            'nis': request.form['nis'],
+            'alasan': request.form['alasan'],
+            'tanggal': request.form['tanggal'],
+        }
+        dataizin.insert_one(data)
+        return redirect(url_for('izin_keluar', success=1))
+
+@app.route('/data_izin')
+def data_izin():
+    data = dataizin.find()
+    return render_template('data_izin.html', data=data)
+
+@app.route('/hapus_izin/<id>')
+def hapus_izin(id):
+    dataizin.delete_one({'_id': ObjectId(id)})
+    return redirect(url_for('data_izin'))
+
+@app.route('/target')
+def target():
+    data = targets.find()
+    return render_template('target.html', data=data)
+
+@app.route('/tambah_target', methods=['GET', 'POST'])
+def tambah_target():
+    if request.method == 'POST':
+        data = {
+            'judul': request.form['judul'],
+            'isi': request.form['isi'],
+        }
+        targets.insert_one(data)
+        return redirect(url_for('target', success=1))
+    
+@app.route('/edit_target', methods=['POST'])
+def edit_target():
+    if request.method == 'POST':
+        target_id = request.form['target_id']
+        if ObjectId.is_valid(target_id):
+            updated_data = {
+                'judul': request.form['judul'],
+                'isi': request.form['isi'],
+            }
+            targets.update_one({'_id': ObjectId(target_id)}, {'$set': updated_data})
+            return redirect(url_for('target'))
+        else:
+            flash('Invalid ObjectId', 'error')
+            return redirect(url_for('target'))
+
+@app.route('/delete_target/<target_id>', methods=['DELETE'])
+def delete_target(target_id):
+    try:
+        # Convert target_id to ObjectId
+        target_id_obj = ObjectId(target_id)
+
+        # Perform deletion
+        result = targets.delete_one({'_id': target_id_obj})
+
+        if result.deleted_count > 0:
+            # Successful deletion
+            return '', 204  # HTTP status code for No Content
+        else:
+            # No document found with the specified ID
+            return 'Target not found', 404
+
+    except Exception as e:
+        print('Error during deletion:', str(e))
+        return 'Internal Server Error', 500
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

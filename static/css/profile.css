@@ -6,6 +6,10 @@ body {
     padding: 3rem !important
 }
 
+.kartu {
+    width: 90%;
+}
+
 .user-card-full {
     overflow: hidden;
 }
@@ -153,7 +157,6 @@ h6 {
     
     overflow-y: auto;
 }
-
 
 .sidebar a {
     display: block;

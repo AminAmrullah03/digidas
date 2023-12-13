@@ -13,26 +13,31 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Data Pelanggaran</h1>
+        <h1 class="mb-4">Data Pulang</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Nama</th>
                     <th scope="col">NIS</th>
-                    <th scope="col">Jenis Pelanggaran</th>
-                    <th scope="col">Kategori Pelanggaran</th>
+                    <th scope="col">Alasan</th>
+                    <th scope="col">Durasi</th>
                     <th scope="col">Tanggal</th>
-                    <th scope="col">Aksi</th> <!-- Kolom tambahan untuk tombol aksi -->
+                    <th scope="col">Penjemput</th>
+                    <th scope="col">Status Penjemput</th>
+                    <th scope="col">Pemberi Izin</th>
                 </tr>
-            </thead>
+            </thead> 
             <tbody>
                 {% for entry in data %}
                     <tr>
                         <td>{{ entry.nama }}</td>
                         <td>{{ entry.nis }}</td>
-                        <td>{{ entry.jenis_pelanggaran }}</td>
-                        <td>{{ entry.kategori_pelanggaran }}</td>
+                        <td>{{ entry.alasan}}</td>
+                        <td>{{ entry.durasi}}</td>
                         <td>{{ entry.tanggal }}</td>
+                        <td>{{ entry.penjemput }}</td>
+                        <td>{{ entry.status_penjemput}}</td>
+                        <td>{{ entry.pemberi_izin }}</td>
                         <td>
                             <!-- Tombol Delete -->
                             <a href="{{ url_for('hapus_data', id=entry['_id']) }}" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>

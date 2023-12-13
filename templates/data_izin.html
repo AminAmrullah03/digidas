@@ -19,10 +19,10 @@
                 <tr>
                     <th scope="col">Nama</th>
                     <th scope="col">NIS</th>
-                    <th scope="col">Jenis Pelanggaran</th>
-                    <th scope="col">Kategori Pelanggaran</th>
+                    <th scope="col">Alasan</th>
                     <th scope="col">Tanggal</th>
-                    <th scope="col">Aksi</th> <!-- Kolom tambahan untuk tombol aksi -->
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,13 +30,9 @@
                     <tr>
                         <td>{{ entry.nama }}</td>
                         <td>{{ entry.nis }}</td>
-                        <td>{{ entry.jenis_pelanggaran }}</td>
-                        <td>{{ entry.kategori_pelanggaran }}</td>
-                        <td>{{ entry.tanggal }}</td>
-                        <td>
-                            <!-- Tombol Delete -->
-                            <a href="{{ url_for('hapus_data', id=entry['_id']) }}" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>
-                        </td>
+                        <td>{{ entry.alasan }}</td>
+                        <td>{{ entry.tanggal}}</td>
+                        <td><a href="{{ url_for('hapus_izin', id=entry['_id']) }}" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
