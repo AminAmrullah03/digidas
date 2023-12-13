@@ -126,6 +126,11 @@ def tambah_santri():
 
     return render_template('tambah_santri.html')
 
+@app.route('/data_santri')
+def data_santri():
+    data = datasantri.find()
+    return render_template('data_santri.html', data=data)
+
 @app.route('/tambah_data', methods=['POST'])
 def tambah_data():
     if request.method == 'POST':
