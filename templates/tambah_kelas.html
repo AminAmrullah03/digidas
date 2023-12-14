@@ -9,7 +9,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <title>Webleb</title>
+    <title>Tambah Kelas</title>
     <link rel="stylesheet" href="/static/css/jurnal.css">
 </head>
 
@@ -38,50 +38,30 @@
         </div>
     </nav>
 
-
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header text-center">
-                        <strong>Daftar Kelas</strong>
+                        <strong>Tambah Kelas Baru</strong>
                     </div>
                     <div class="card-body">
-                        <div class="has-text-centered">
-                            <a href="{{ url_for('tambah_kelas') }}" class="button is-success">Tambah Kelas</a>
-                        </div>
-                        <!-- Floating Table untuk Menampilkan Data Kelas -->
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Nama Kelas</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entry in data %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <td>
-                                        <a href="{{ url_for('kelas', kelas_id=entry._id) }}">
-                                            {{ entry.nama_kelas }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <!-- Tambahkan tombol atau link untuk melihat santri di kelas -->
-                                        <a href="{{ url_for('kelas', kelas_id=entry._id) }}"
-                                            class="btn btn-info">Lihat Santri</a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        <form method="post" action="{{ url_for('tambah_kelas') }}">
+                            <div class="mb-3">
+                                <label for="nama_kelas" class="form-label">Nama Kelas</label>
+                                <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" required>
+                            </div>
+                            <div style="display: flex;">
+                                <button type="submit" class="btn btn-success">Tambah Kelas</button>
+                                <a href="/jurnal" style="margin-left: 30px;" class="btn btn-warning">Kembali</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <footer class="text-center text-lg-start text-white"
         style="margin-top: 20px;background-color: #3e4551; margin-top: 150px;">
