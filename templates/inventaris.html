@@ -12,6 +12,7 @@
 
     <title>Inventaris</title>
     <link rel="stylesheet" href="/static/css/inventaris.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
         function toggleForm() {
@@ -31,27 +32,45 @@
         }
         document.addEventListener("DOMContentLoaded", function () {
             var successParam = new URLSearchParams(window.location.search).get('success');
-            if (successParam === '1') {
-                alert("Data berhasil ditambahkan!");
+            if (successParam === '1' && !localStorage.getItem('alertShown')) {
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Data berhasil ditambahkan!',
+                    icon: 'success'
+                });
+                localStorage.setItem('alertShown', 'true'); // Menandai bahwa pesan telah ditampilkan
             }
         });
-
         function hapus_daftar(id) {
-            var konfirmasi = confirm("Apakah Anda yakin ingin menghapus data ini?");
-            if (konfirmasi) {
-                $.ajax({
-                    type: "GET",
-                    url: `/hapus_data_inventaris/${id}`,
-                    success: function (response) {
-                        console.log(response);
-                        alert("Data berhasil dihapus!");
-                        window.location.reload();
-                    },
-                    error: function (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
+            Swal.fire({
+                title: 'Hapus Data',
+                text: 'Apakah Anda yakin ingin menghapus data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: `/hapus_data_inventaris/${id}`,
+                        success: function (response) {
+                            console.log(response);
+                            Swal.fire(
+                                'Terhapus!',
+                                'Data berhasil dihapus.',
+                                'success'
+                            );
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+            });
         }
         function edit_daftar(id) {
             var formTambah = document.getElementById("formTambah");
@@ -98,23 +117,39 @@
                 },
                 success: function (response) {
                     console.log(response);
-                    alert("Data berhasil diedit!");
-                    window.location.reload();
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Data berhasil diedit!',
+                        icon: 'success'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000); // Reload halaman setelah 2 detik (sesuaikan dengan kebutuhan)
+                        }
+                    });
                 },
+
                 error: function (error) {
                     console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan saat mengedit data.',
+                        icon: 'error'
+                    });
                 }
             });
         }
+
         function kembali() {
-        var formTambah = document.getElementById("formTambah");
-        var btnKembali = document.getElementById("btnKembali");
-        formTambah.style.display = "none";
-        document.getElementById('nama').value = '';
-        document.getElementById('jumlah').value = '';
-        document.getElementById('kondisi_bagus').value = '';
-        document.getElementById('kondisi_rusak').value = '';
-    }
+            var formTambah = document.getElementById("formTambah");
+            var btnKembali = document.getElementById("btnKembali");
+            formTambah.style.display = "none";
+            document.getElementById('nama').value = '';
+            document.getElementById('jumlah').value = '';
+            document.getElementById('kondisi_bagus').value = '';
+            document.getElementById('kondisi_rusak').value = '';
+        }
     </script>
 </head>
 
