@@ -35,7 +35,7 @@
                         <td>{{ entry.tanggal }}</td>
                         <td>
                             <!-- Tombol Delete -->
-                            <a href="{{ url_for('hapus_data', id=entry['_id']) }}" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>
+                            <a href="{{ url_for('hapus_pelanggaran', id=entry['_id']) }}" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

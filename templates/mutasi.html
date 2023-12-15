@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="/static/css/mutasi.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+        function toggleForm() {
+            var formTambah = document.getElementById("formTambah");
+            if (formTambah.style.display === "none") {
+                formTambah.style.display = "block";
+            } else {
+                formTambah.style.display = "none";
+            }
+        }
         document.addEventListener("DOMContentLoaded", function () {
             var successParam = new URLSearchParams(window.location.search).get('success');
             if (successParam === '1') {
@@ -22,6 +30,14 @@
                 });
             }
         });
+        function kembali() {
+            var formTambah = document.getElementById("formTambah");
+            if (formTambah.style.display === "none") {
+                formTambah.style.display = "none";
+            } else {
+                formTambah.style.display = "none";
+            }
+        }
     </script>
 </head>
 

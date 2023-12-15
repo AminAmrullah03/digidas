@@ -132,6 +132,11 @@ def data_santri():
     data = datasantri.find()
     return render_template('data_santri.html', data=data)
 
+@app.route('/hapus_data/<id>')
+def hapus_data(id):
+    datasantri.delete_one({'_id': ObjectId(id)})
+    return redirect(url_for('data_santri'))
+
 @app.route('/tambah_data', methods=['POST'])
 def tambah_data():
     if request.method == 'POST':
@@ -150,8 +155,8 @@ def data_pelanggaran():
     data = pelanggarans.find()
     return render_template('data_pelanggaran.html', data=data)
 
-@app.route('/hapus_data/<id>')
-def hapus_data(id):
+@app.route('/hapus_pelanggaran/<id>')
+def hapus_pelanggaran(id):
     pelanggarans.delete_one({'_id': ObjectId(id)})
     return redirect(url_for('data_pelanggaran'))
 
