@@ -24,6 +24,7 @@ datainv = db['datainv']
 datapulang = db['pulang']
 dataizin = db['izin']
 targets = db['target']
+datakelas = db['kelas']
 
 app = Flask(__name__)
 app.secret_key = 'hello_print'
@@ -126,6 +127,11 @@ def tambah_santri():
 
     return render_template('tambah_santri.html')
 
+@app.route('/data_santri')
+def data_santri():
+    data = datasantri.find()
+    return render_template('data_santri.html', data=data)
+
 @app.route('/tambah_data', methods=['POST'])
 def tambah_data():
     if request.method == 'POST':
@@ -148,10 +154,6 @@ def data_pelanggaran():
 def hapus_data(id):
     pelanggarans.delete_one({'_id': ObjectId(id)})
     return redirect(url_for('data_pelanggaran'))
-
-@app.route('/jurnal')
-def jurnal():
-    return render_template('jurnal.html')
 
 @app.route('/tambah_daftar', methods=['GET', 'POST'])
 def tambah_daftar():
@@ -313,6 +315,73 @@ def delete_target(target_id):
     except Exception as e:
         print('Error during deletion:', str(e))
         return 'Internal Server Error', 500
+
+@app.route('/jurnal')
+def jurnal():
+    # Dapatkan data kelas dari database
+    data = datakelas.find()
+    return render_template('jurnal.html', data=data)
+
+@app.route('/tambah_kelas', methods=['GET', 'POST'])
+def tambah_kelas():
+    if request.method == 'POST':
+        # Ambil data kelas yang diinput dari form
+        nama_kelas = request.form['nama_kelas']
+
+        # Tambahkan kelas baru ke dalam database
+        datakelas.insert_one({'nama_kelas': nama_kelas, 'santri': []})
+
+        flash('Kelas berhasil ditambahkan', 'success')
+        return redirect(url_for('jurnal'))
+
+    return render_template('tambah_kelas.html')
+
+@app.route('/kelas/<kelas_id>', methods=['GET', 'POST'])
+def kelas(kelas_id):
+    if not ObjectId.is_valid(kelas_id):
+        flash('Invalid ObjectId for kelas_id', 'error')
+        return redirect(url_for('jurnal'))
+
+    kelas = datakelas.find_one({'_id': ObjectId(kelas_id)})
+
+    if not kelas:
+        flash('Kelas not found', 'error')
+        return redirect(url_for('jurnal'))
+
+    if request.method == 'POST':
+        nama_santri = request.form['nama_santri']
+        nis_santri = request.form['nis_santri']
+        datakelas.update_one(
+            {'_id': ObjectId(kelas_id)},
+            {'$addToSet': {'santri': {'nama': nama_santri, 'nis': nis_santri}}}
+        )
+
+        flash('Santri berhasil ditambahkan ke kelas', 'success')
+        kelas = datakelas.find_one({'_id': ObjectId(kelas_id)})
+
+    return render_template('kelas.html', kelas=kelas)
+
+@app.route('/edit_santri/<kelas_id>', methods=['POST'])
+def edit_santri(kelas_id):
+    santri_id = request.form['santri_id']
+    nama_santri = request.form['nama_santri']
+    nis_santri = request.form['nis_santri']
+
+    # Lakukan pembaruan data santri di database
+    datakelas.update_one(
+        {'_id': ObjectId(kelas_id), 'santri._id': ObjectId(santri_id)},
+        {'$set': {'santri.$.nama': nama_santri, 'santri.$.nis': nis_santri}}
+    )
+
+    return redirect(url_for('kelas', kelas_id=kelas_id))
+
+@app.route('/delete_santri/<kelas_id>/<santri_id>', methods=['GET'])
+def delete_santri(kelas_id, santri_id):
+    datakelas.delete_one(
+        {'_id': ObjectId(kelas_id)},
+        {'$pull': {'santri': {'_id': ObjectId(santri_id)}}}
+    )
+    return redirect(url_for('kelas', kelas_id=kelas_id))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

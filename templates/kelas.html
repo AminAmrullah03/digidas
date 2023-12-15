@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>{{ kelas.nama_kelas }}</title>
+    <link rel="stylesheet" href="/static/css/jurnal.css">
+    <script>
+        function editSantri(id, nama, nis) {
+            // Isi formulir edit dengan data santri yang dipilih
+            $('#editSantriId').val(id);
+            $('#editNamaSantri').val(nama);
+            $('#editNISsantri').val(nis);
+
+            // Tampilkan modal edit
+            $('#editSantriModal').modal('show');
+        }
+
+        function deleteSantri(id) {
+            var confirmDelete = confirm('Apakah Anda yakin ingin menghapus santri ini?');
+            if (confirmDelete) {
+                alert('santri berhasil dihapus')
+                window.location.reload;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link menu" href="/templates/index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu" href="/templates/about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu" href="/templates/jurnal.html">Absensi</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>{{ kelas.nama_kelas }}</h1>
+
+        <!-- Formulir untuk menambahkan santri -->
+        <form method="post" action="{{ url_for('kelas', kelas_id=kelas._id) }}" class="my-4">
+            <!-- Formulir untuk menambahkan santri -->
+            <div class="mb-3">
+                <label for="nama_santri" class="form-label">Nama Santri:</label>
+                <input type="text" name="nama_santri" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="nis_santri" class="form-label">NIS Santri:</label>
+                <input type="text" name="nis_santri" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Tambah Santri</button>
+        </form>
+        <div class="modal fade" id="editSantriModal" tabindex="-1" aria-labelledby="editSantriModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSantriModalLabel">Edit Santri</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editSantriForm">
+                            <div class="mb-3">
+                                <label for="editNamaSantri" class="form-label">Nama Santri:</label>
+                                <input type="text" id="editNamaSantri" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editNISsantri" class="form-label">NIS Santri:</label>
+                                <input type="text" id="editNISsantri" class="form-control" required>
+                            </div>
+
+                            <input type="hidden" id="editSantriId">
+
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="list-group">
+            {% for santri in kelas.santri %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ santri.nama }} - {{ santri.nis }}
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-warning"
+                        onclick="editSantri('{{ santri._id }}', '{{ santri.nama }}', '{{ santri.nis }}')">Edit</button>
+                    <button style="margin-left: 10px;" type="button" class="btn btn-danger"
+                        onclick="deleteSantri('{{ santri._id }}')">Hapus</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+    <footer class="text-center text-lg-start text-white"
+        style="margin-top: 20px;background-color: #3e4551; margin-top: 150px;">
+        <section class="">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <p>
+                        <li>Alfin Gunawan</li>
+                        <li>Ahmad Amin Amrullah</li>
+                        <li>Bryan Nathanael Tutuhatunewa</li>
+                        <li>Daffara Chairunnisa Zhuliani</li>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <hr class="mb-4" />
+        <section class="mb-4 text-center">
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                    class="fab fa-instagram"></i></a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
+                role="button"><i class="fab fa-github"></i></a>
+        </section>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            © 2023 Copyright:
+            <a class="text-white" href="#">DIGIDAS</a>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+
+</html>

@@ -9,66 +9,11 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/jurnal.css">
-
-    <style>
-        .judul {
-            color: #bea42e;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.75rem;
-            font-weight: bold;
-        }
-
-        .login-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .form {
-            width: 400px;
-            padding: 40px;
-            box-sizing: border-box;
-            border: 1px solid black;
-            background: linear-gradient(to bottom, #037367, #00281f);
-            border-radius: 5px;
-            color: white;
-        }
-
-        .form input,
-        .btni {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #fff;
-            outline: none;
-            color: white;
-            margin-bottom: 1.5rem;
-        }
-
-        .btni {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            text-decoration: none;
-            border: 1px solid #bea42e;
-            transition: background-color 0.5s, color 0.5s;
-            letter-spacing: 2px;
-        }
-
-        .btni:hover {
-            background: #bea42e;
-            color: #fff;
-            border-radius: 5px;
-        }
-    </style>
-
-
 </head>
 
-
+<body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img class="logo" src="/static/pic/ppd.png" alt=""></a>
@@ -94,69 +39,80 @@
     </nav>
 
 
-    <h1 class="title is-1 has-text-centered mt-4">Jurnal Santri</h1>
-    <p class="subtitle is-4 has-text-centered">Pilih Kelas</p>
-    <div class="container is-align-items-center" style="margin-top: 20px;">
-        <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                aria-describedby="search-addon" />
-            <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
-        </div>
-    </div>
-
-    <div class="container is-align-items-center mt-4">
-        <div class="buttons is-centered">
-            <a href="/templates/absensi1.html" class="button is-primary modal-button">Kelas 1</a>
-            <a href="/templates/absensi2.html" class="button is-primary modal-button">Kelas 2</a>
-            <a href="/templates/absensi3.html" class="button is-primary modal-button">Kelas 3</a>
-        </div>
-    </div>
-
-
-
-    
-
-    <!-- Sisanya modals untuk kelas lainnya -->
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </body>
-
-</html>
-
-
-
-<footer class="text-center text-lg-start text-white" style="margin-top: 20px;background-color: #3e4551; margin-top: 150px;">
-    <section class="">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                <p>
-                    <li>Alfin Gunawan</li>
-                    <li>Ahmad Amin Amrullah</li>
-                    <li>Bryan Nathanael Tutuhatunewa</li>
-                    <li>Daffara Chairunnisa Zhuliani</li>
-                </p>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <strong>Daftar Kelas</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="has-text-centered">
+                            <a href="{{ url_for('tambah_kelas') }}" class="button is-success">Tambah Kelas</a>
+                        </div>
+                        <!-- Floating Table untuk Menampilkan Data Kelas -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama Kelas</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in data %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>
+                                        <a href="{{ url_for('kelas', kelas_id=entry._id) }}">
+                                            {{ entry.nama_kelas }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!-- Tambahkan tombol atau link untuk melihat santri di kelas -->
+                                        <a href="{{ url_for('kelas', kelas_id=entry._id) }}"
+                                            class="btn btn-info">Lihat Santri</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-
-    <hr class="mb-4" />
-
-    <section class="mb-4 text-center">
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook"></i>
-        </a>
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
-        <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
-            role="button"><i class="fab fa-github"></i></a>
-    </section>
     </div>
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2023 Copyright:
-        <a class="text-white" href="#">DIGIDAS</a>
-    </div>
-</footer>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <footer class="text-center text-lg-start text-white"
+        style="margin-top: 20px;background-color: #3e4551; margin-top: 150px;">
+        <section class="">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <p>
+                        <li>Alfin Gunawan</li>
+                        <li>Ahmad Amin Amrullah</li>
+                        <li>Bryan Nathanael Tutuhatunewa</li>
+                        <li>Daffara Chairunnisa Zhuliani</li>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <hr class="mb-4" />
+        <section class="mb-4 text-center">
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                    class="fab fa-instagram"></i></a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
+                role="button"><i class="fab fa-github"></i></a>
+        </section>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            © 2023 Copyright:
+            <a class="text-white" href="#">DIGIDAS</a>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
