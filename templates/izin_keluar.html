@@ -20,7 +20,11 @@
             // Periksa apakah parameter 'success' ada dan bernilai 1
             if (successParam === '1') {
                 // Tampilkan pop-up alert jika berhasil
-                alert("Data berhasil ditambahkan!");
+                Swal.fire({
+                    title: "Berhasil ditambahkan!",
+                    text: "You clicked the button!",
+                    icon: "success"
+                });
             }
         });
     </script>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/santri_pulang.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
@@ -18,7 +19,11 @@
             // Periksa apakah parameter 'success' ada dan bernilai 1
             if (successParam === '1') {
                 // Tampilkan pop-up alert jika berhasil
-                alert("Data berhasil ditambahkan!");
+                Swal.fire({
+                    title: "Berhasil ditambahkan!",
+                    text: "You clicked the button!",
+                    icon: "success"
+                });
             }
         });
     </script>

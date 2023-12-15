@@ -10,11 +10,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Webleb</title>
     <link rel="stylesheet" href="/static/css/mutasi.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var successParam = new URLSearchParams(window.location.search).get('success');
             if (successParam === '1') {
-                alert("Data berhasil ditambahkan!");
+                Swal.fire({
+                    title: "Berhasil ditambahkan!",
+                    text: "You clicked the button!",
+                    icon: "success"
+                });
             }
         });
     </script>

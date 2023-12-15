@@ -473,3 +473,9 @@ figure:hover img {
         color: #fff;
     }
 }
+
+@media (max-width: 991px) {
+    #settings-trigger {
+      display: none;
+    }
+  }

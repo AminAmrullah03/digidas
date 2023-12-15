@@ -8,35 +8,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/static/css/target.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Document</title>
     <script>
-        $(function () {
+                $(function () {
             $('#newpost').click(function () {
                 $('#newPost').fadeIn();
             });
+
+            $('#formTambahTarget').submit(function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Tambah Target',
+                    text: 'Apakah Anda yakin ingin menambah target ini?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, tambahkan!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form jika dikonfirmasi
+                        $(this)[0].submit();
+                    }
+                });
+            });
+
+            $('#formEditTarget').submit(function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Edit Target',
+                    text: 'Apakah Anda yakin ingin mengedit target ini?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, edit!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form jika dikonfirmasi
+                        $(this)[0].submit();
+                    }
+                });
+            });
         });
 
+        
+    
         function cancel() {
             $('#newPost').fadeOut();
         }
-
+        
+    
         function editTarget(targetId, judul, isi) {
-            $('#editTargetId').val(targetId);
-            $('#editJudul').val(judul);
-            $('#editIsi').val(isi);
-            $('#editArticleModal').fadeIn();
-        }
 
+                $('#editTargetId').val(targetId);
+                $('#editJudul').val(judul);
+                $('#editIsi').val(isi);
+                $('#editArticleModal').fadeIn();
+            }
+    
         function cancelEdit() {
             $('#editArticleModal').fadeOut();
         }
-
+    
         function deleteTarget(targetId, judul) {
-            var confirmation = confirm('Are you sure you want to delete "' + judul + '"?');
-            if (confirmation) {
-                fetch('/delete_target/' + targetId, {
-                    method: 'DELETE',
-                })
+            Swal.fire({
+                title: 'Sudah yakin?',
+                text: `Apakah Anda yakin ingin menghapus "${judul}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/delete_target/' + targetId, {
+                        method: 'DELETE',
+                    })
                     .then(response => {
                         if (response.ok) {
                             // Reload the page after successful deletion
@@ -47,9 +96,11 @@
                         }
                     })
                     .catch(error => console.error('Error during deletion:', error));
-            }
+                }
+            });
         }
     </script>
+    
 </head>
 
 <body>
@@ -79,7 +130,7 @@
     <div class="container">
         <div id="newPost" style="display: none;">
             <h1>Target</h1>
-            <form action="{{ url_for('tambah_target') }}" method="post">
+            <form id="formTambahTarget" action="{{ url_for('tambah_target') }}" method="post">
                 <div class="form-group" style="margin-bottom: 20px;">
                     <input id="judul" name="judul" class="form-control" placeholder="Target" type="text" required />
                 </div>
@@ -93,7 +144,7 @@
     </div>
     <div id="editArticleModal" style="display: none; margin-left: 100px;">
         <h1>Edit Target</h1>
-        <form class="login-form" id="editForm" method="post" action="{{ url_for('edit_target') }}">
+        <form id="formEditTarget" method="post" action="{{ url_for('edit_target') }}">
             <input type="hidden" id="editTargetId" name="target_id" value="">
             <div class="form-group" style="margin-bottom: 20px;">
                 <input id="editJudul" name="judul" class="form-control" placeholder="Target" type="text" required />
