@@ -12,22 +12,43 @@
     <title>{{ kelas.nama_kelas }}</title>
     <link rel="stylesheet" href="/static/css/jurnal.css">
     <script>
-        function editSantri(id, nama, nis) {
-            // Isi formulir edit dengan data santri yang dipilih
-            $('#editSantriId').val(id);
-            $('#editNamaSantri').val(nama);
-            $('#editNISsantri').val(nis);
+        function lihat(index) {
+            $.ajax({
+                type: "GET",
+                url: `{{ url_for('get_santri', kelas_id=kelas._id, santri_index='') }}${index}`,
+                success: function (response) {
+                    alert(`Nama Santri: ${response.nama}, NIS: ${response.nis}`);
+                },
+                error: function (error) {
+                    alert('Terjadi kesalahan saat mengambil data santri');
+                }
+            });
+        }
+        function hapusSantri(kelasId, santriIndex) {
+            var confirmDelete = confirm('Apakah Anda yakin ingin menghapus santri ini?');
 
-            // Tampilkan modal edit
-            $('#editSantriModal').modal('show');
+            if (confirmDelete) {
+                fetch(`/hapus_santri/${kelasId}/${santriIndex}`, {
+                    method: 'POST',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message); // Menampilkan pesan dari server
+                        window.location.reload(); // Memuat ulang halaman setelah menghapus santri
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan'); // Menampilkan alert jika terjadi kesalahan
+                    });
+            }
         }
 
-        function deleteSantri(id) {
-            var confirmDelete = confirm('Apakah Anda yakin ingin menghapus santri ini?');
-            if (confirmDelete) {
-                alert('santri berhasil dihapus')
-                window.location.reload;
-            }
+        function kembali() {
+            var formTambah = document.getElementById("formTambah");
+            var btnKembali = document.getElementById("btnKembali");
+            formTambah.style.display = "none";
+            document.getElementById('editNamasantri').value = '';
+            document.getElementById('jumlah').value = '';
         }
     </script>
 </head>
@@ -59,65 +80,33 @@
 
     <div class="container mt-4">
         <h1>{{ kelas.nama_kelas }}</h1>
-
         <!-- Formulir untuk menambahkan santri -->
-        <form method="post" action="{{ url_for('kelas', kelas_id=kelas._id) }}" class="my-4">
-            <!-- Formulir untuk menambahkan santri -->
+        <form method="post" id="formTambah" action="{{ url_for('kelas', kelas_id=kelas._id) }}" class="my-4">
             <div class="mb-3">
                 <label for="nama_santri" class="form-label">Nama Santri:</label>
-                <input type="text" name="nama_santri" class="form-control" required>
+                <input type="text" id="nama" name="nama_santri" class="form-control" required>
             </div>
-
             <div class="mb-3">
                 <label for="nis_santri" class="form-label">NIS Santri:</label>
-                <input type="text" name="nis_santri" class="form-control" required>
+                <input type="text" id="nis" name="nis_santri" class="form-control" required>
             </div>
-
             <button type="submit" class="btn btn-primary">Tambah Santri</button>
         </form>
-        <div class="modal fade" id="editSantriModal" tabindex="-1" aria-labelledby="editSantriModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editSantriModalLabel">Edit Santri</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editSantriForm">
-                            <div class="mb-3">
-                                <label for="editNamaSantri" class="form-label">Nama Santri:</label>
-                                <input type="text" id="editNamaSantri" class="form-control" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="editNISsantri" class="form-label">NIS Santri:</label>
-                                <input type="text" id="editNISsantri" class="form-control" required>
-                            </div>
-
-                            <input type="hidden" id="editSantriId">
-
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <ul class="list-group">
             {% for santri in kelas.santri %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 {{ santri.nama }} - {{ santri.nis }}
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-warning"
-                        onclick="editSantri('{{ santri._id }}', '{{ santri.nama }}', '{{ santri.nis }}')">Edit</button>
-                    <button style="margin-left: 10px;" type="button" class="btn btn-danger"
-                        onclick="deleteSantri('{{ santri._id }}')">Hapus</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="hapusSantri('{{ kelas._id }}', {{ loop.index - 1 }})">
+                        Hapus
+                    </button>
                 </div>
             </li>
             {% endfor %}
         </ul>
     </div>
-
 
 
     <footer class="text-center text-lg-start text-white"
