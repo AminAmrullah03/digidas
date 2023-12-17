@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from pymongo import MongoClient
 import os
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from dotenv import load_dotenv
 from os.path import join, dirname
 from bson import ObjectId, json_util
@@ -33,40 +34,50 @@ app.secret_key = 'hello_print'
 TOKEN_KEY = 'mytoken'
 SECRET_KEY = 'SPARTA'
 
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=15)
+
+jwt = JWTManager(app)
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method in ['GET', 'POST']:
-        if request.method == 'GET':
-            return render_template('login.html')
-        elif request.method == 'POST':
-            nis = request.form.get('nis')
-            password = request.form.get('password')
-            pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
-            user = datasantri.find_one({"nis": nis})
-            if user and (user["password"] == pw_hash):
-                print(user['password'], pw_hash)
-                session["user_id"] = str(user["_id"])
-                return jsonify({
-                    'result': 'success',
-                    'user_id': session['user_id'],
-                    'nama': user['nama']
-                    })
-            else:
-                flash("NIS atau password tidak valid.", "danger")
-                return redirect(url_for("login"))
-            
-        return jsonify({'result': 'success'})
-    
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        nis = request.form.get('nis')
+        password = request.form.get('password')
+        pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        user = datasantri.find_one({"nis": nis})
+        if user and (user["password"] == pw_hash):
+            session.permanent = True  # Set session menjadi permanen
+            session["user_id"] = str(user["_id"])
+            return jsonify({
+                'result': 'success',
+                'user_id': session['user_id'],
+                'nama': user['nama']
+            })
+        else:
+            flash("NIS atau password tidak valid.", "danger")
+            return redirect(url_for("login"))
+
 @app.route("/dashboard")
 def dashboard():
     user_id = session.get("user_id")
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
+    
     user = datasantri.find_one({"_id": user_id})
     return render_template("dashboard.html", user=user)
 
@@ -76,16 +87,19 @@ def about():
 
 @app.route("/pendataan")
 def pendataan():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     return render_template("pendataan_santri.html")
 
 @app.route("/profile")
 def profile():
     user_id = session.get("user_id")
-
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
-        return redirect(url_for("home"))
-
+        return redirect(url_for("login"))
+    
     user_data = datasantri.find_one({"_id": ObjectId(user_id)})
 
     if user_data:
@@ -96,15 +110,28 @@ def profile():
 
 @app.route("/inventaris")
 def inventaris():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = list(datainv.find())
     return render_template('inventaris.html', data=data)
 
 @app.route("/pelanggaran")
 def pelanggaran():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
+    
     return render_template("pelanggaran.html")
 
 @app.route('/tambah_santri', methods=['GET', 'POST'])
 def tambah_santri():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     if request.method == 'POST':
         nama = request.form['nama']
         nis = request.form['nis']
@@ -130,6 +157,10 @@ def tambah_santri():
 
 @app.route('/data_santri', methods=['GET', 'POST'])
 def data_santri():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = datasantri.find()
     return render_template('data_santri.html', data=data)
 
@@ -175,6 +206,10 @@ def tambah_data():
 
 @app.route('/data_pelanggaran', methods=['GET', 'POST'])
 def data_pelanggaran():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = pelanggarans.find()
     return render_template('data_pelanggaran.html', data=data)
 
@@ -246,6 +281,10 @@ def edit_data_inventaris(id):
 
 @app.route('/mutasi')
 def mutasi():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = pindahan.find()
     return render_template('mutasi.html', data=data)
 
@@ -263,10 +302,18 @@ def tambah_mutasi():
     
 @app.route('/santri_pulang')
 def santri_pulang():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     return render_template('santri_pulang.html')
 
 @app.route('/data_pulang')
 def data_pulang():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = datapulang.find()
     return render_template('data_pulang.html', data=data)
 
@@ -288,6 +335,10 @@ def tambah_pulang():
 
 @app.route('/pengumuman')   
 def pengumuman():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = pengumumans.find()
     return render_template('/pengumuman.html', data=data)
 
@@ -333,6 +384,10 @@ def delete_pengumuman(pengumuman_id):
 
 @app.route('/izin_keluar')
 def izin_keluar():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     return render_template('izin_keluar.html')
 
 @app.route('/tambah_keluar', methods=['POST'])
@@ -349,6 +404,10 @@ def tambah_keluar():
 
 @app.route('/data_izin')
 def data_izin():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = dataizin.find()
     return render_template('data_izin.html', data=data)
 
@@ -359,6 +418,10 @@ def hapus_izin(id):
 
 @app.route('/target')
 def target():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = targets.find()
     return render_template('target.html', data=data)
 
@@ -404,6 +467,10 @@ def delete_target(target_id):
 
 @app.route('/jurnal', methods=['GET', 'POST'])
 def jurnal():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     data = datakelas.find()
     return render_template('jurnal.html', data=data)
 
@@ -435,6 +502,10 @@ def edit_kelas(id):
 
 @app.route('/tambah_kelas', methods=['GET', 'POST'])
 def tambah_kelas():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     if request.method == 'POST':
         nama_kelas = request.form['nama_kelas']
         datakelas.insert_one({'nama_kelas': nama_kelas, 'santri': []})
@@ -446,6 +517,10 @@ def tambah_kelas():
 
 @app.route('/kelas/<kelas_id>', methods=['GET', 'POST'])
 def kelas(kelas_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
     santri_index = -1  # Initialize santri_index with a default value
 
     if not ObjectId.is_valid(kelas_id):
