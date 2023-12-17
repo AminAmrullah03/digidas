@@ -25,6 +25,7 @@ datapulang = db['pulang']
 dataizin = db['izin']
 targets = db['target']
 datakelas = db['kelas']
+pengumumans = db['pengumuman']
 
 app = Flask(__name__)
 app.secret_key = 'hello_print'
@@ -285,9 +286,50 @@ def tambah_pulang():
         datapulang.insert_one(data)
         return redirect(url_for('santri_pulang', success=1))
 
-@app.route('/pengumuman')
+@app.route('/pengumuman')   
 def pengumuman():
-    return render_template('/pengumuman.html')
+    data = pengumumans.find()
+    return render_template('/pengumuman.html', data=data)
+
+@app.route('/tambah_pengumuman', methods=['GET', 'POST'])
+def tambah_pengumuman():
+    if request.method == 'POST':
+        data = {
+            'judul': request.form['judul'],
+            'isi': request.form['isi'],
+        }
+        pengumumans.insert_one(data)
+        return redirect(url_for('pengumuman', success=1))
+
+@app.route('/edit_pengumuman', methods=['POST'])
+def edit_pengumuman():
+    if request.method == 'POST':
+        pengumuman_id = request.form['pengumuman_id']
+        if ObjectId.is_valid(pengumuman_id):
+            updated_data = {
+                'judul': request.form['judul'],
+                'isi': request.form['isi'],
+            }
+            pengumumans.update_one({'_id': ObjectId(pengumuman_id)}, {'$set': updated_data})
+            return redirect(url_for('pengumuman'))
+        else:
+            flash('Invalid ObjectId', 'error')
+            return redirect(url_for('pengumuman'))
+
+@app.route('/delete_pengumuman/<pengumuman_id>', methods=['DELETE'])
+def delete_pengumuman(pengumuman_id):
+    try:
+        pengumuman_id_obj = ObjectId(pengumuman_id)
+        result = pengumumans.delete_one({'_id': pengumuman_id_obj})
+
+        if result.deleted_count > 0:
+            return '', 204 
+        else:
+            return 'Pengumuman tidak ditemukan', 404
+
+    except Exception as e:
+        print('Error during deletion:', str(e))
+        return 'Internal Server Error', 500
 
 @app.route('/izin_keluar')
 def izin_keluar():
@@ -348,17 +390,12 @@ def edit_target():
 @app.route('/delete_target/<target_id>', methods=['DELETE'])
 def delete_target(target_id):
     try:
-        # Convert target_id to ObjectId
         target_id_obj = ObjectId(target_id)
-
-        # Perform deletion
         result = targets.delete_one({'_id': target_id_obj})
 
         if result.deleted_count > 0:
-            # Successful deletion
-            return '', 204  # HTTP status code for No Content
+            return '', 204 
         else:
-            # No document found with the specified ID
             return 'Target not found', 404
 
     except Exception as e:
@@ -378,7 +415,6 @@ def get_data_kelas(id):
         return jsonify(json.loads(json_util.dumps(data)))
     else:
         return jsonify({'error': 'Data not found'})
-
 
 @app.route('/hapus_kelas/<id>')
 def hapus_kelas(id):
@@ -438,7 +474,6 @@ def kelas(kelas_id):
 
     return render_template('kelas.html', kelas=kelas, santri_index=santri_index)
 
-
 @app.route('/update_santri/<kelas_id>', methods=['POST'])
 def update_santri(kelas_id):
     try:
@@ -455,8 +490,6 @@ def update_santri(kelas_id):
     except Exception as e:
         print('Error during santri update:', str(e))
         return jsonify({'error': 'Terjadi kesalahan saat mengupdate data santri'}), 500
-
-
 
 @app.route('/get_santri/<kelas_id>/<santri_index>', methods=['GET'])
 def get_santri(kelas_id, santri_index):
