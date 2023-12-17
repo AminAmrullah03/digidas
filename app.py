@@ -127,7 +127,7 @@ def tambah_santri():
 
     return render_template('tambah_santri.html')
 
-@app.route('/data_santri')
+@app.route('/data_santri', methods=['GET', 'POST'])
 def data_santri():
     data = datasantri.find()
     return render_template('data_santri.html', data=data)
@@ -136,6 +136,28 @@ def data_santri():
 def hapus_data(id):
     datasantri.delete_one({'_id': ObjectId(id)})
     return redirect(url_for('data_santri'))
+
+@app.route('/get_data_santri/<id>')
+def get_data_santri(id):
+    data = datasantri.find_one({'_id': ObjectId(id)})
+    data['_id'] = str(data['_id'])
+    return jsonify(json.loads(json_util.dumps(data)))
+
+@app.route('/edit_data_santri/<id>', methods=['POST'])
+def edit_data_santri(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama': request.form['nama'],
+                'nis': request.form['nis'],
+                'jenis_kelamin': request.form['jenis_kelamin'],
+                'no_hp': request.form['no_hp'],
+                'alamat': request.form['alamat'],
+            }
+        }
+        pelanggarans.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
 
 @app.route('/tambah_data', methods=['POST'])
 def tambah_data():
@@ -150,7 +172,7 @@ def tambah_data():
         pelanggarans.insert_one(data)
         return redirect(url_for('pelanggaran', success=1))
 
-@app.route('/data_pelanggaran')
+@app.route('/data_pelanggaran', methods=['GET', 'POST'])
 def data_pelanggaran():
     data = pelanggarans.find()
     return render_template('data_pelanggaran.html', data=data)
@@ -159,6 +181,28 @@ def data_pelanggaran():
 def hapus_pelanggaran(id):
     pelanggarans.delete_one({'_id': ObjectId(id)})
     return redirect(url_for('data_pelanggaran'))
+
+@app.route('/get_data_pelanggaran/<id>')
+def get_data_pelanggaran(id):
+    data = pelanggarans.find_one({'_id': ObjectId(id)})
+    data['_id'] = str(data['_id'])
+    return jsonify(json.loads(json_util.dumps(data)))
+
+@app.route('/edit_data_pelanggaran/<id>', methods=['POST'])
+def edit_data_pelanggaran(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama': request.form['nama'],
+                'nis': request.form['nis'],
+                'jenis_pelanggaran': request.form['jenis_pelanggaran'],
+                'kategori_pelanggaran': request.form['kategori_pelanggaran'],
+                'tanggal': request.form['tanggal'],
+            }
+        }
+        pelanggarans.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
 
 @app.route('/tambah_daftar', methods=['GET', 'POST'])
 def tambah_daftar():
@@ -171,7 +215,7 @@ def tambah_daftar():
         }
         datainv.insert_one(data)
         return redirect(url_for('inventaris', success=1))
-    
+
 @app.route('/hapus_data_inventaris/<id>')
 def hapus_data_inventaris(id):
     datainv.delete_one({'_id': ObjectId(id)})
@@ -321,19 +365,42 @@ def delete_target(target_id):
         print('Error during deletion:', str(e))
         return 'Internal Server Error', 500
 
-@app.route('/jurnal')
+@app.route('/jurnal', methods=['GET', 'POST'])
 def jurnal():
-    # Dapatkan data kelas dari database
     data = datakelas.find()
     return render_template('jurnal.html', data=data)
+
+@app.route('/get_data_kelas/<id>')
+def get_data_kelas(id):
+    data = datakelas.find_one({'_id': ObjectId(id)})
+    if data:
+        data['_id'] = str(data['_id'])
+        return jsonify(json.loads(json_util.dumps(data)))
+    else:
+        return jsonify({'error': 'Data not found'})
+
+
+@app.route('/hapus_kelas/<id>')
+def hapus_kelas(id):
+    datakelas.delete_one({'_id': ObjectId(id)})
+    return jsonify({'result': 'success'})
+
+@app.route('/edit_kelas/<id>', methods=['POST'])
+def edit_kelas(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama_kelas': request.form['nama_kelas'],
+            }
+        }
+        datakelas.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
 
 @app.route('/tambah_kelas', methods=['GET', 'POST'])
 def tambah_kelas():
     if request.method == 'POST':
-        # Ambil data kelas yang diinput dari form
         nama_kelas = request.form['nama_kelas']
-
-        # Tambahkan kelas baru ke dalam database
         datakelas.insert_one({'nama_kelas': nama_kelas, 'santri': []})
 
         flash('Kelas berhasil ditambahkan', 'success')
@@ -343,6 +410,8 @@ def tambah_kelas():
 
 @app.route('/kelas/<kelas_id>', methods=['GET', 'POST'])
 def kelas(kelas_id):
+    santri_index = -1  # Initialize santri_index with a default value
+
     if not ObjectId.is_valid(kelas_id):
         flash('Invalid ObjectId for kelas_id', 'error')
         return redirect(url_for('jurnal'))
@@ -356,6 +425,10 @@ def kelas(kelas_id):
     if request.method == 'POST':
         nama_santri = request.form['nama_santri']
         nis_santri = request.form['nis_santri']
+
+        # Get the loop index from the form data
+        santri_index = int(request.form.get('santri_index', -1))
+
         datakelas.update_one(
             {'_id': ObjectId(kelas_id)},
             {'$addToSet': {'santri': {'nama': nama_santri, 'nis': nis_santri}}}
@@ -363,7 +436,27 @@ def kelas(kelas_id):
         flash('Santri berhasil ditambahkan ke kelas', 'success')
         kelas = datakelas.find_one({'_id': ObjectId(kelas_id)})
 
-    return render_template('kelas.html', kelas=kelas)
+    return render_template('kelas.html', kelas=kelas, santri_index=santri_index)
+
+
+@app.route('/update_santri/<kelas_id>', methods=['POST'])
+def update_santri(kelas_id):
+    try:
+        santri_index = int(request.form['edit_santri'])
+        nama_santri = request.form['edit_nama_santri']
+        nis_santri = request.form['edit_nis_santri']
+        datakelas.update_one(
+            {'_id': ObjectId(kelas_id)},
+            {'$set': {'santri.{0}'.format(santri_index): {'nama': nama_santri, 'nis': nis_santri}}}
+        )
+        print('Data Santri berhasil diubah')
+        return jsonify({'message': 'Data Santri berhasil diubah'})
+
+    except Exception as e:
+        print('Error during santri update:', str(e))
+        return jsonify({'error': 'Terjadi kesalahan saat mengupdate data santri'}), 500
+
+
 
 @app.route('/get_santri/<kelas_id>/<santri_index>', methods=['GET'])
 def get_santri(kelas_id, santri_index):
@@ -406,74 +499,10 @@ def hapus_santri(kelas_id, santri_index):
     except ValueError:
         return jsonify({'message': 'Invalid santri_index'}), 400
 
-    # Hapus santri dengan index yang sesuai
     del kelas['santri'][santri_index]
-
-    # Perbarui data kelas di database
     datakelas.update_one({'_id': ObjectId(kelas_id)}, {'$set': {'santri': kelas['santri']}})
 
     return jsonify({'message': 'Santri berhasil dihapus'})
-
-
-# @app.route('/hapus_santri/<kelas_id>/<santri_index>', methods=['GET'])
-# def hapus_santri(kelas_id, santri_index):
-#     if not ObjectId.is_valid(kelas_id) or not santri_index.isdigit():
-#         return jsonify({'message': 'Invalid data'}), 400
-
-#     santri_index = int(santri_index)
-
-#     # Hapus santri dari kelas berdasarkan index
-#     datakelas.update_one(
-#         {'_id': ObjectId(kelas_id)},
-#         {'$unset': {f'santri.{santri_index}': 1}}
-#     )
-
-#     # Menghapus nilai null yang dihasilkan oleh $unset
-#     datakelas.update_one(
-#         {'_id': ObjectId(kelas_id)},
-#         {'$pull': {'santri': None}}
-#     )
-
-#     return redirect(url_for('kelas', kelas_id=kelas_id))
-
-
-@app.route('/get-data-raden')
-def raden():
-    kelas = datakelas.find_one({'_id': ObjectId('657a31957ca7f82d5ea643b5')})
-    kelas['_id'] = str(kelas['_id'])
-    return jsonify(json.loads(json_util.dumps(kelas)))
-
-@app.route('/delete-data-raden')
-def deleteRaden():
-    datakelas.update_one(
-        {'_id': ObjectId('657a31957ca7f82d5ea643b5')},
-        {'$pull': {'santri': {'nama': 'raden', 'nis': '21w12' }} }
-    )
-    kelas = datakelas.find_one({'_id': ObjectId('657a31957ca7f82d5ea643b5')})
-    kelas['_id'] = str(kelas['_id'])
-    return jsonify(json.loads(json_util.dumps(kelas)))
-
-@app.route('/get_data_kelas/<id>')
-def get_data_kelas(id):
-    data = datakelas.find_one({'_id': ObjectId(id)})
-    data['_id'] = str(data['_id'])
-    return jsonify(json.loads(json_util.dumps(data)))
-
-# @app.route('/edit_data_kelas/<id>', methods=['POST'])
-# def edit_data_kelas(id):
-#     # if request.method == 'POST':
-#     #     filter_query = {'_id': ObjectId(id)}
-#     #     update_data = {
-#     #         '$set': {
-#     #             'nama_barang': request.form['nama_barang'],
-#     #             'jumlah': request.form['jumlah'],
-#     #             'kondisi_bagus': request.form['kondisi_bagus'],
-#     #             'kondisi_rusak': request.form['kondisi_rusak'],
-#     #         }
-#     #     }
-
-#     #     datakelas.update_one(filter_query, update_data)
-#     #     return jsonify({'result': 'success'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
