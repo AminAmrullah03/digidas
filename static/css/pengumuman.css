@@ -7,7 +7,32 @@ nav {
     display: flex;
     padding-bottom: 50px;
 }
+.logo {
+    width: 60px;
+    margin-left: 20px;
+}
 
+.menu {
+    text-decoration: none;
+    margin: 0 0.7vw;
+    color: #bea42e;
+    font-family: Philosopher;
+    font-size: x-large;
+}
+
+.menu:hover {
+    text-decoration: none;
+    margin: 0 0.7vw;
+    color: white;
+    font-family: Philosopher;
+    font-size: x-large;
+}
+
+
+
+.nav-item {
+    padding-right: 80px;
+}
 /* BUTTON */
 
 button {

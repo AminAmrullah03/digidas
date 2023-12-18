@@ -24,9 +24,15 @@
                     title: "Berhasil ditambahkan!",
                     text: "You clicked the button!",
                     icon: "success"
-                });
+                }).then(() => {
+            window.location.href = "/data_izin";
+        });
             }
         });
+
+        function kembali() {
+            window.location.href = "/data_izin";
+        }
     </script>
 
 </head>
@@ -61,6 +67,7 @@
                 <input type="text" placeholder="Alasan" name="alasan" required />
                 <input type="date" placeholder="" name="tanggal" required />
                 <button type="submit" class="btni">Tambah</button>
+                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
             </form>
         </div>
     </div>

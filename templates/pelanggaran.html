@@ -34,16 +34,22 @@
             // Ambil nilai dari parameter query string 'success' (contoh: "?success=1")
             var successParam = new URLSearchParams(window.location.search).get('success');
 
-            // Periksa apakah parameter 'success' ada dan bernilai 1
-            if (successParam === '1') {
-                // Tampilkan pop-up alert jika berhasil
-                Swal.fire({
-                    title: "Berhasil ditambahkan!",
-                    text: "You clicked the button!",
-                    icon: "success"
-                });
-            }
+    if (successParam === '1') {
+        // Tampilkan pop-up alert jika berhasil
+        Swal.fire({
+            title: "Berhasil ditambahkan!",
+            text: "You clicked the button!",
+            icon: "success"
+        }).then(() => {
+            window.location.href = "/data_pelanggaran";
         });
+    }
+
+        });
+
+        function kembali() {
+            window.location.href = "/data_pelanggaran";
+        }
     </script>
 </head>
 
@@ -59,10 +65,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">Home</a>
+                        <a class="nav-link menu" href="/dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">About</a>
+                        <a class="nav-link menu" href="/about">About</a>
                     </li>
                 </ul>
             </div>
@@ -87,6 +93,7 @@
                 </div>
                 <input type="date" name="tanggal" placeholder="Tanggal" required />
                 <button type="submit" class="btni">Tambah</button>
+                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
             </form>
         </div>
     </div>

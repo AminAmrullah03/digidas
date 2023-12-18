@@ -127,6 +127,11 @@ def tambah_santri():
 
     return render_template('tambah_santri.html')
 
+@app.route('/hapus_data_santri/<id>')
+def hapus_data_santri(id):
+    datasantri.delete_one({'_id': ObjectId(id)})
+    return jsonify({'result': 'success'})
+
 @app.route('/data_santri')
 def data_santri():
     data = datasantri.find()
@@ -235,6 +240,11 @@ def tambah_pulang():
         }
         datapulang.insert_one(data)
         return redirect(url_for('santri_pulang', success=1))
+
+@app.route('/hapus_data_pulang/<id>')
+def hapus_data_pulang(id):
+    datapulang.delete_one({'_id': ObjectId(id)})
+    return jsonify({'result': 'success'})
 
 @app.route('/pengumuman')
 def pengumuman():

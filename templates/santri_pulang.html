@@ -23,9 +23,15 @@
                     title: "Berhasil ditambahkan!",
                     text: "You clicked the button!",
                     icon: "success"
+                }).then(() => {
+                    window.location.href = "/data_pulang";
                 });
             }
         });
+
+        function kembali() {
+            window.location.href = "/data_pulang";
+        }
     </script>
 </head>
 
@@ -53,7 +59,9 @@
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post" action="{{ url_for('tambah_pulang') }}">
-                <strong><h2 class="judul">Santri Pulang</h2></strong>
+                <strong>
+                    <h2 class="judul">Santri Pulang</h2>
+                </strong>
                 <input type="text" name="nama" placeholder="Nama" required />
                 <input type="text" name="nis" placeholder="NIS" required />
                 <input type="text" name="alasan" placeholder="Alasan" required />
@@ -63,6 +71,7 @@
                 <input type="text" name="status_penjemput" placeholder="Status Penjemput" required />
                 <input type="text" name="pemberi_izin" placeholder="Pemberi Izin" required />
                 <button type="submit" class="btni">Tambah</button>
+                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
             </form>
         </div>
     </div>

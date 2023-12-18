@@ -35,9 +35,12 @@
                     title: "Berhasil ditambahkan!",
                     text: "You clicked the button!",
                     icon: "success"
+                }).then(function () {
+                    window.location.href = "/data_santri";
                 });
             }
         });
+
 
         function showPassword() {
             var passwordField = document.getElementById("password");
@@ -138,8 +141,9 @@
                         </svg>
                     </i>
                     <div>
-                    <button type="submit" class="btni">Tambah</button>
-                </div>
+                        <button type="submit" class="btni">Tambah</button>
+                        <button type="button" class="btni" onclick="window.location.href = '/data_santri';">Kembali</button>
+                    </div>
             </form>
         </div>
     </div>
