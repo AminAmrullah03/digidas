@@ -77,6 +77,7 @@
             var btnKembali = document.getElementById("btnKembali");
             document.querySelector('.judul').innerText = 'Edit Inventaris';
             document.querySelector('.btni').innerText = 'Simpan';
+            document.querySelector('.login-form').removeAttribute('action');
             document.querySelector('.btni').removeAttribute('onclick');
             document.querySelector('.btni').addEventListener('click', function () {
                 simpan_edit(id);

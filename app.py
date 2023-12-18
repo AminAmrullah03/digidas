@@ -9,6 +9,7 @@ import jwt
 import hashlib
 from datetime import datetime, timedelta
 import json
+from werkzeug.security import check_password_hash, generate_password_hash
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -60,7 +61,7 @@ def login():
         pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
         user = datasantri.find_one({"nis": nis})
         if user and (user["password"] == pw_hash):
-            session.permanent = True  # Set session menjadi permanen
+            session.permanent = True
             session["user_id"] = str(user["_id"])
             return jsonify({
                 'result': 'success',
@@ -108,23 +109,42 @@ def profile():
         flash("Data santri tidak ditemukan.", "danger")
         return redirect(url_for("home"))
 
-@app.route("/inventaris")
-def inventaris():
+@app.route('/change_password', methods=['POST'])
+def change_password():
     user_id = session.get("user_id")
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
-    data = list(datainv.find())
-    return render_template('inventaris.html', data=data)
 
-@app.route("/pelanggaran")
-def pelanggaran():
-    user_id = session.get("user_id")
-    if not user_id:
-        flash("Anda harus login terlebih dahulu!", "danger")
-        return redirect(url_for("login"))
+    raw_new = request.form['current_password'].strip()
+    current_password = hashlib.sha256(raw_new.encode()).hexdigest()
+    new_password = request.form['new_password'].strip()
+    confirm_password = request.form['confirm_password'].strip()
+
+    user = datasantri.find_one({'_id': ObjectId(user_id)})
     
-    return render_template("pelanggaran.html")
+    # Debugging prints
+    print('Kata Sandi Saat Ini:', current_password)
+    print('Kata Sandi Terenkripsi di Database:', user['password'])
+    if current_password != user['password']:
+        flash('Kata sandi saat ini tidak benar', 'danger')
+        print('password tidak cocok')
+        return redirect(url_for('profile'))
+
+    if current_password == user['password']:
+        if new_password != confirm_password:
+            print('tak cocok')
+            flash('Kata sandi baru dan konfirmasi kata sandi tidak cocok', 'danger')
+            return redirect(url_for('profile'))
+        
+        hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+        datasantri.update_one({'_id': ObjectId(user_id)}, {'$set': {'password': hashed_password}})
+        flash('Kata sandi berhasil diubah!', 'success')
+        print('sandi :', new_password )
+        print('Kata sandi berhasil diubah menjadi :', hashed_password)
+        return redirect(url_for('profile'))
+    
+    return render_template('profile')
 
 @app.route('/tambah_santri', methods=['GET', 'POST'])
 def tambah_santri():
@@ -154,6 +174,24 @@ def tambah_santri():
         return redirect(url_for('tambah_santri', success=1))
 
     return render_template('tambah_santri.html')
+
+@app.route("/inventaris", methods=['GET', 'POST'])
+def inventaris():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
+    data = list(datainv.find())
+    return render_template('inventaris.html', data=data)
+
+@app.route("/pelanggaran")
+def pelanggaran():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
+    
+    return render_template("pelanggaran.html")
 
 @app.route('/data_santri', methods=['GET', 'POST'])
 def data_santri():
@@ -188,7 +226,7 @@ def edit_data_santri(id):
                 'alamat': request.form['alamat'],
             }
         }
-        pelanggarans.update_one(filter_query, update_data)
+        datasantri.update_one(filter_query, update_data)
         return jsonify({'result': 'success'})
 
 @app.route('/tambah_data', methods=['POST'])
@@ -279,7 +317,7 @@ def edit_data_inventaris(id):
         datainv.update_one(filter_query, update_data)
         return jsonify({'result': 'success'})
 
-@app.route('/mutasi')
+@app.route('/mutasi', methods=['GET', 'POST'])
 def mutasi():
     user_id = session.get("user_id")
     if not user_id:
@@ -287,6 +325,11 @@ def mutasi():
         return redirect(url_for("login"))
     data = pindahan.find()
     return render_template('mutasi.html', data=data)
+
+@app.route('/hapus_mutasi/<id>')
+def hapus_mutasi(id):
+    pindahan.delete_one({'_id': ObjectId(id)})
+    return redirect(url_for('mutasi'))
 
 @app.route('/tambah_mutasi', methods=['POST'])
 def tambah_mutasi():
@@ -299,7 +342,28 @@ def tambah_mutasi():
         }
         pindahan.insert_one(data)
         return redirect(url_for('mutasi', success=1))
-    
+
+@app.route('/get_mutasi/<id>')
+def get_mutasi(id):
+    data = pindahan.find_one({'_id': ObjectId(id)})
+    data['_id'] = str(data['_id'])
+    return jsonify(json.loads(json_util.dumps(data)))
+
+@app.route('/edit_mutasi/<id>', methods=['POST'])
+def edit_mutasi(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama': request.form['nama'],
+                'jenis_kelamin': request.form['jenis_kelamin'],
+                'tanggal': request.form['tanggal'],
+                'status': request.form['status'],
+            }
+        }
+        pindahan.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
+
 @app.route('/santri_pulang')
 def santri_pulang():
     user_id = session.get("user_id")
@@ -308,7 +372,7 @@ def santri_pulang():
         return redirect(url_for("login"))
     return render_template('santri_pulang.html')
 
-@app.route('/data_pulang')
+@app.route('/data_pulang', methods=['GET', 'POST'])
 def data_pulang():
     user_id = session.get("user_id")
     if not user_id:
@@ -332,6 +396,36 @@ def tambah_pulang():
         }
         datapulang.insert_one(data)
         return redirect(url_for('santri_pulang', success=1))
+
+@app.route('/hapus_pulang/<id>')
+def hapus_pulang(id):
+    datapulang.delete_one({'_id': ObjectId(id)})
+    return redirect(url_for('data_pulang'))
+
+@app.route('/get_data_pulang/<id>')
+def get_data_pulang(id):
+    data = datapulang.find_one({'_id': ObjectId(id)})
+    data['_id'] = str(data['_id'])
+    return jsonify(json.loads(json_util.dumps(data)))
+
+@app.route('/edit_data_pulang/<id>', methods=['POST'])
+def edit_data_pulang(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama': request.form['nama'],
+                'nis': request.form['nis'],
+                'alasan': request.form['alasan'],
+                'durasi': request.form['durasi'],
+                'tanggal': request.form['tanggal'],
+                'penjemput': request.form['penjemput'],
+                'status_penjemput': request.form['status_penjemput'],
+                'pemberi_izin': request.form['pemberi_izin'],
+            }
+        }
+        datapulang.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
 
 @app.route('/pengumuman')   
 def pengumuman():
@@ -390,6 +484,36 @@ def izin_keluar():
         return redirect(url_for("login"))
     return render_template('izin_keluar.html')
 
+@app.route('/data_izin', methods=['GET', 'POST'])
+def data_izin():
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Anda harus login terlebih dahulu!", "danger")
+        return redirect(url_for("login"))
+    data = dataizin.find()
+    return render_template('data_izin.html', data=data)
+
+@app.route('/get_data_izin/<id>')
+def get_data_izin(id):
+    data = dataizin.find_one({'_id': ObjectId(id)})
+    data['_id'] = str(data['_id'])
+    return jsonify(json.loads(json_util.dumps(data)))
+
+@app.route('/edit_data_izin/<id>', methods=['POST'])
+def edit_data_izin(id):
+    if request.method == 'POST':
+        filter_query = {'_id': ObjectId(id)}
+        update_data = {
+            '$set': {
+                'nama': request.form['nama'],
+                'nis': request.form['nis'],
+                'alasan': request.form['alasan'],
+                'tanggal': request.form['tanggal'],
+            }
+        }
+        dataizin.update_one(filter_query, update_data)
+        return jsonify({'result': 'success'})
+
 @app.route('/tambah_keluar', methods=['POST'])
 def tambah_keluar():
     if request.method == 'POST':
@@ -401,15 +525,6 @@ def tambah_keluar():
         }
         dataizin.insert_one(data)
         return redirect(url_for('izin_keluar', success=1))
-
-@app.route('/data_izin')
-def data_izin():
-    user_id = session.get("user_id")
-    if not user_id:
-        flash("Anda harus login terlebih dahulu!", "danger")
-        return redirect(url_for("login"))
-    data = dataizin.find()
-    return render_template('data_izin.html', data=data)
 
 @app.route('/hapus_izin/<id>')
 def hapus_izin(id):
@@ -594,7 +709,6 @@ def get_santri(kelas_id, santri_index):
 def hapus_santri(kelas_id, santri_index):
     if not ObjectId.is_valid(kelas_id):
         return jsonify({'message': 'Invalid data'}), 400
-
     kelas = datakelas.find_one({'_id': ObjectId(kelas_id)})
 
     if not kelas:
@@ -608,7 +722,7 @@ def hapus_santri(kelas_id, santri_index):
         return jsonify({'message': 'Invalid santri_index'}), 400
 
     del kelas['santri'][santri_index]
-    datakelas.update_one({'_id': ObjectId(kelas_id)}, {'$set': {'santri': kelas['santri']}})
+    datakelas.delete_one_one({'_id': ObjectId(kelas_id)}, {'$set': {'santri': kelas['santri']}})
 
     return jsonify({'message': 'Santri berhasil dihapus'})
 
