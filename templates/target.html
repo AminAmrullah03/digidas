@@ -156,27 +156,25 @@
             <button class="btn btn-warning" onclick="cancelEdit()">Cancel</button>
         </form>
     </div>
-    <article class="container" style="margin-top: 20px;">
-        <div class="row">
-            <section class="col-lg-6">
+    <div class="ag-format-container">
+        <div class="ag-courses_box">
+          <div class="ag-courses_item">
+            <a href="#" class="ag-courses-item_link">
+              <div class="ag-courses-item_bg"></div>
                 {% for entry in data %}
-                <div class="card" style="margin-top: 30px;">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ entry.judul }}</h3>
-                        <br>
-                        <p class="card-text">{{ entry.isi }}</p>
-                    </div>
-                    <div style="display: flex;">
-                        <button class="btn btn-warning"
+                <div class="ag-courses-item_title">{{ entry.judul }}</div>          
+                  <div class="ag-courses-description">{{ entry.isi }}</div>
+                  <button class="btn btn-warning"
                             onclick="editTarget('{{ entry._id }}', '{{ entry.judul }}', '{{ entry.isi }}')">Edit</button>
                         <button style="margin-left: 20px;" class="btn btn-danger"
                             onclick="deleteTarget('{{ entry._id }}', '{{ entry.judul }}')">Delete</button>
+                  </div>
+                </a>
                     </div>
                 </div>
                 {% endfor %}
-            </section>
+            </div>
         </div>
-    </article>
     
     <footer class="text-center text-lg-start text-white" style="background-color: #3e4551; margin-top: 150px;">
         <div class="container p-4 pb-0">

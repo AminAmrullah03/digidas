@@ -75,8 +75,10 @@ html {
     margin-top: 50px;
     top: 50%;
     left: 50%;
-    width: 400px;
-    padding: 40px;
+    width: 800px;
+    border-radius: 20px;
+    height: 550px;
+    padding: 20px;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     border: solid black;
@@ -86,7 +88,7 @@ html {
 .form input {
     width: 100%;
     padding: 10px 0;
-    font-size: 13px;
+    font-size: 10px;
     color: #fff;
     margin-bottom: 30px;
     border: none;
