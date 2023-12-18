@@ -165,93 +165,138 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/index.html">Home</a>
+                        <a class="nav-link menu" href="dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/about.html">About</a>
+                        <a class="nav-link menu" href="about">About</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <h1 class="title has-text-centered">Inventaris</h1>
-        <table class="table caption-top">
-            <thead>
-                <tr>
-                    <th scope="col">Nama Barang</th>
-                    <th scope="col">Jumlah</th>
-                    <th scope="col">Kondisi Bagus</th>
-                    <th scope="col">Kondisi Rusak</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in data %}
-                <tr>
-                    <td>{{ entry.nama_barang}}</td>
-                    <td>{{ entry.jumlah}}</td>
-                    <td>{{ entry.kondisi_bagus}}</td>
-                    <td>{{ entry.kondisi_rusak}}</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary" onclick="edit_daftar('{{ entry._id }}')">
-                            <i class="fas fa-edit"></i> Edit
+    <div class="main-content">
+        <div class="container mt-7">
+            <!-- Table -->
+            <h1 class="tbtitle">Inventaris</h1>
+
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Daftar inventaris</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Nama Barang</th>
+                                    <th scope="col">Jumlah</th>
+                                    <th scope="col">Kondisi Bagus</th>
+                                    <th scope="col">Kondisi Rusak</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in data %}
+                                <tr>
+                                    <td>{{ entry.nama_barang}}</td>
+                                    <td>{{ entry.jumlah}}</td>
+                                    <td>{{ entry.kondisi_bagus}}</td>
+                                    <td>{{ entry.kondisi_rusak}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="edit_daftar('{{ entry._id }}')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="hapus_daftar('{{ entry._id }}')">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="button" class="tambah" onclick="toggleForm()">
+                            <i class="fas fa-plus"></i> Tambah
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="hapus_daftar('{{ entry._id }}')">
-                            <i class="fas fa-trash"></i> Hapus
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-primary" onclick="toggleForm()">
-            <i class="fas fa-plus"></i> Tambah
-        </button>
-    </div>
-    <div class="login-page" id="formTambah" style="display:none;">
-        <div class="form">
-            <form class="login-form" method="post" action="/tambah_daftar">
-                <strong>
-                    <h2 class="judul">Tambah Inventaris</h2>
-                </strong>
-                <input type="text" placeholder="Nama Barang" id="nama" name="nama_barang" required />
-                <input type="number" placeholder="Jumlah" id="jumlah" name="jumlah" required />
-                <input type="number" placeholder="Kondisi Bagus" id="kondisi_bagus" name="kondisi_bagus" required />
-                <input type="number" placeholder="Kondisi Rusak" id="kondisi_rusak" name="kondisi_rusak" required />
-                <button type="submit" class="btni" onclick="tambah_daftar()">Tambah</button>
-                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
-            </form>
-        </div>
-    </div>
-    <br><br>
-    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551;">
-        <section class="">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                    <p>
-                        <li>Alfin Gunawan</li>
-                        <li>Ahmad Amin Amrullah</li>
-                        <li>Bryan Nathanael Tutuhatunewa</li>
-                        <li>Daffara Chairunnisa Zhuliani</li>
-                    </p>
+                    </div>
+                    <div class="login-page" id="formTambah" style="display:none;">
+                        <div class="form">
+                            <form class="login-form" method="post" action="/tambah_daftar">
+                                <strong>
+                                    <h2 class="judul">Tambah Inventaris</h2>
+                                </strong>
+                                <input type="text" placeholder="Nama Barang" id="nama" name="nama_barang" required />
+                                <input type="number" placeholder="Jumlah" id="jumlah" name="jumlah" required />
+                                <input type="number" placeholder="Kondisi Bagus" id="kondisi_bagus" name="kondisi_bagus"
+                                    required />
+                                <input type="number" placeholder="Kondisi Rusak" id="kondisi_rusak" name="kondisi_rusak"
+                                    required />
+                                <button type="submit" class="btni" onclick="tambah_daftar()">Tambah</button>
+                                <button type="button" class="btni" id="btnKembali" onclick="kembali()">Kembali</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-        <hr class="mb-4" />
-        <section class="mb-4 text-center">
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook"></i>
-            </a>
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-                    class="fab fa-instagram"></i></a>
-            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
-                role="button"><i class="fab fa-github"></i></a>
-        </section>
         </div>
+    </div>
+    </div>
+    <br><br>
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+
+                        <p>
+                            <li>Alfin Gunawan</li>
+                            <li>Ahmad Amin Amrullah</li>
+                            <li>Bryan Nathanael Tutuhatunewa</li>
+                            <li>Daffara Chairunnisa Zhuliani</li>
+                        </p>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+
+            <hr class="mb-4" />
+
+            <!-- Section: Social media -->
+            <section class="mb-4 text-center">
+                <!-- Facebook -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-facebook"></i>
+                </a>
+
+                <!-- Instagram -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                        class="fab fa-instagram"></i></a>
+
+                <!-- Github -->
+                <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
+                    role="button"><i class="fab fa-github"></i></a>
+            </section>
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
             © 2023 Copyright:
             <a class="text-white" href="#">DIGIDAS</a>
         </div>
+        <!-- Copyright -->
     </footer>
+    <!-- Footer -->
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

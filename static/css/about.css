@@ -3,12 +3,12 @@
 
 nav {
     height: 4.5rem;
-    width: 100%;
-    background: linear-gradient(to right, #037367, #00281f);
+    width: 100vw;
+    background: linear-gradient(to right,#0b9c8e ,#034d3d);
     box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
     display: flex;
+    padding-bottom: 50px;
 }
-
 .logo {
     width: 60px;
     margin-left: 20px;
@@ -116,7 +116,7 @@ body {
 }
 
 .hero-body {
-    background-image: url(https://i.pinimg.com/236x/ce/6c/dc/ce6cdc517c5eef915e77d5d47d93d524.jpg);
+    background-image: url(https://images.unsplash.com/photo-1701979343286-e2e2ae1712ce?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
