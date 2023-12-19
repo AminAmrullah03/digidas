@@ -187,12 +187,12 @@ h2 {
     /* Awalnya disembunyikan */
 }
 
-
+/* 
 body {
     background-image: url(/static/pic/bg.png);
     background-size: 250px;
     background-repeat: repeat;
-}
+} */
 bhbgtvfr ed     
 [tabindex='-1']:focus {
     outline: 0 !important;

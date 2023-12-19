@@ -92,6 +92,7 @@ def about():
 @app.route("/pendataan")
 def pendataan():
     user_id = session.get("user_id")
+    user = datasantri.find_one({"_id": user_id})
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
@@ -203,7 +204,7 @@ def data_santri():
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
     data = datasantri.find()
-    return render_template('data_santri.html', data=data)
+    return render_template('data_santri.html', data=data, user_id=user_id)
 
 @app.route('/hapus_data/<id>')
 def hapus_data(id):
@@ -436,8 +437,12 @@ def pengumuman():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = pengumumans.find()
-    return render_template('/pengumuman.html', data=data)
+    return render_template('/pengumuman.html', data=data, user=user)
 
 @app.route('/tambah_pengumuman', methods=['GET', 'POST'])
 def tambah_pengumuman():
@@ -493,8 +498,14 @@ def data_izin():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
+
     data = dataizin.find()
-    return render_template('data_izin.html', data=data)
+    return render_template('data_izin.html', data=data, user=user)
 
 @app.route('/get_data_izin/<id>')
 def get_data_izin(id):
@@ -589,8 +600,12 @@ def jurnal():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = datakelas.find()
-    return render_template('jurnal.html', data=data)
+    return render_template('jurnal.html', data=data, user=user)
 
 @app.route('/get_data_kelas/<id>')
 def get_data_kelas(id):
