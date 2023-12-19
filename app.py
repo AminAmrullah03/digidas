@@ -746,6 +746,7 @@ def get_santri(kelas_id, santri_index):
 def hapus_santri(kelas_id, santri_index):
     if not ObjectId.is_valid(kelas_id):
         return jsonify({'message': 'Invalid data'}), 400
+
     kelas = datakelas.find_one({'_id': ObjectId(kelas_id)})
 
     if not kelas:
@@ -759,7 +760,7 @@ def hapus_santri(kelas_id, santri_index):
         return jsonify({'message': 'Invalid santri_index'}), 400
 
     del kelas['santri'][santri_index]
-    datakelas.delete_one_one({'_id': ObjectId(kelas_id)}, {'$set': {'santri': kelas['santri']}})
+    datakelas.update_one({'_id': ObjectId(kelas_id)}, {'$set': {'santri': kelas['santri']}})
 
     return jsonify({'message': 'Santri berhasil dihapus'})
 
