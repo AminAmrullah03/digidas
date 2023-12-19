@@ -179,12 +179,14 @@
                         <br>
                         <p class="card-text">{{ entry.isi }}</p>
                     </div>
+                    {% if user.status == 'admin' %}
                     <div style="display: flex;">
                         <button class="btn btn-warning"
                             onclick="edit_pengumuman('{{ entry._id }}', '{{ entry.judul }}', '{{ entry.isi }}')">Edit</button>
                         <button style="margin-left: 20px;" class="btn btn-danger"
                             onclick="delete_pengumuman('{{ entry._id }}', '{{ entry.judul }}')">Delete</button>
                     </div>
+                    {% endif %}
                 </div>
             </section>
         </div>

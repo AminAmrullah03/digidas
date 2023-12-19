@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/data_izin.css">
-    <title>Data Izin</title>
+    <title>Data Santri</title>
     <!-- CSS Bootstrap 4.5.2 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -190,7 +190,7 @@
         </div>
         <table class="table">
             {% if user_id.status == 'admin' %}
-            <a href="{{ url_for('tambah_santri') }}" class="btn btn-primary mb-4"><i class="fas fa-plus"></i>Tambah </a>
+            <button href="{{ url_for('tambah_santri') }}" class="btn btn-primary mb-4"><i class="fas fa-plus"></i>Tambah </button>
             {% endif %}
             <thead>
                 <tr>
@@ -212,7 +212,6 @@
                     <td>{{ entry.no_hp}}</td>
                     <td>{{ entry.alamat }}</td>
                     <td>{{ entry.status}}</td>
-                    
                     <td>
                         <button type="button" class="btn btn-secondary" onclick="edit_daftar('{{ entry._id }}')">
                             <i class="fas fa-edit"></i> Edit

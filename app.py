@@ -185,8 +185,12 @@ def inventaris():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = list(datainv.find())
-    return render_template('inventaris.html', data=data)
+    return render_template('inventaris.html', data=data, user=user)
 
 @app.route("/pelanggaran")
 def pelanggaran():
@@ -194,8 +198,11 @@ def pelanggaran():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
-    
-    return render_template("pelanggaran.html")
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
+    return render_template("pelanggaran.html", user=user)
 
 @app.route('/data_santri', methods=['GET', 'POST'])
 def data_santri():
@@ -327,6 +334,10 @@ def mutasi():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = pindahan.find()
     return render_template('mutasi.html', data=data)
 
@@ -382,8 +393,12 @@ def data_pulang():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = datapulang.find()
-    return render_template('data_pulang.html', data=data)
+    return render_template('data_pulang.html', data=data, user=user)
 
 @app.route('/tambah_pulang', methods=['POST'])
 def tambah_pulang():
@@ -551,8 +566,12 @@ def target():
     if not user_id:
         flash("Anda harus login terlebih dahulu!", "danger")
         return redirect(url_for("login"))
+    user = datasantri.find_one({"_id": ObjectId(user_id)})  # Convert user_id back to ObjectId
+    if not user:
+        flash("User tidak ditemukan!", "danger")
+        return redirect(url_for("login"))
     data = targets.find()
-    return render_template('target.html', data=data)
+    return render_template('target.html', data=data, user=user)
 
 @app.route('/tambah_target', methods=['GET', 'POST'])
 def tambah_target():

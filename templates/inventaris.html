@@ -212,20 +212,24 @@
                     <td>{{ entry.kondisi_bagus}}</td>
                     <td>{{ entry.kondisi_rusak}}</td>
                     <td>
+                        {% if user.status == 'admin' %}
                         <button type="button" class="btn btn-secondary" onclick="edit_daftar('{{ entry._id }}')">
                             <i class="fas fa-edit"></i> Edit
                         </button>
                         <button type="button" class="btn btn-danger" onclick="hapus_daftar('{{ entry._id }}')">
                             <i class="fas fa-trash"></i> Hapus
                         </button>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% if user.status == 'admin' %}
         <button type="button" class="btn btn-primary" onclick="toggleForm()">
             <i class="fas fa-plus"></i> Tambah
         </button>
+        {% endif %}
     </div>
     <div class="login-page" id="formTambah" style="display:none;">
         <div class="form">
