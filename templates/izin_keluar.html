@@ -27,6 +27,9 @@
                 });
             }
         });
+        function izin(){
+            window.location.href('data_izin')
+        }
     </script>
 
 </head>
@@ -50,17 +53,23 @@
                     </li>
                 </ul>
             </div>
-        </div> 
+        </div>
     </nav>
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post" action="/tambah_keluar">
-                <strong><h2 class="judul">Santri Izin</h2></strong>
+                <strong>
+                    <h2 class="judul">Santri Izin</h2>
+                </strong>
                 <input type="text" placeholder="Nama" name="nama" required />
                 <input type="text" placeholder="NIS" name="nis" required />
                 <input type="text" placeholder="Alasan" name="alasan" required />
                 <input type="date" placeholder="" name="tanggal" required />
-                <button type="submit" class="btni">Tambah</button>
+                <div class="" style="display: flex;">
+                    <button type="submit" class="btni">Tambah</button>
+                    <a class="btni" href="/data_izin" style="margin-left: 25px; background-color: white;">Kembali</a>
+                </div>
+
             </form>
         </div>
     </div>

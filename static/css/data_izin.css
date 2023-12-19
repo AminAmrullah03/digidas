@@ -1,0 +1,273 @@
+nav {
+    height: 4.5rem;
+    width: 100vw;
+    background: linear-gradient(to right, #0b9c8e, #034d3d);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+}
+
+
+body {
+    background-image: url(/static/pic/bg.png);
+    background-size: 250px;
+    background-repeat: repeat;
+}
+
+
+/* body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #ffeba7;
+  height: 100vh;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #12141d 100%);
+} */
+
+.logo {
+    width: 60px;
+    margin-left: 20px;
+}
+
+.menu {
+    text-decoration: none;
+    margin: 0 0.7vw;
+    color: #bea42e;
+    font-family: Philosopher;
+    font-size: x-large;
+}
+
+.menu:hover {
+    text-decoration: none;
+    margin: 0 0.7vw;
+    color: white;
+    font-family: Philosopher;
+    font-size: x-large;
+}
+
+.tlogin {
+    margin-right: 30px;
+    font-family: Philosopher;
+    color: #bea42e;
+    border-color: #bea42e;
+    width: 80px;
+}
+
+.tlogin:hover {
+    border-color: white;
+    color: white;
+}
+
+.nav-item {
+    padding-right: 80px;
+}
+
+.footer {
+    width: 100%;
+    left: 0;
+    right: 0;
+    position: fixed;
+    bottom: 0;
+    background: linear-gradient(to right, #037367, #00281f);
+    ;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    height: 400px;
+}
+
+.carousel {
+    margin-top: 50px;
+}
+
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    /* Adjust the right value based on your layout */
+    transform: translateY(-50%);
+    z-index: 1;
+    /* Adjust the z-index as needed */
+}
+
+.carousel-control-prev {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    /* Adjust the right value based on your layout */
+    transform: translateY(-50%);
+    z-index: 1;
+    /* Adjust the z-index as needed */
+}
+
+
+.site-footer {
+    background: linear-gradient(to right, #037367, #00281f);
+    /* Menggunakan background sebagai linear gradient yang sama */
+    padding: 45px 0 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #161616;
+}
+
+.site-footer hr {
+    border-top-color: #020202;
+    opacity: 0.5;
+}
+
+.site-footer hr.small {
+    margin: 20px 0;
+}
+
+.site-footer h6 {
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-top: 5px;
+    letter-spacing: 2px;
+}
+
+.site-footer a {
+    color: #737373;
+}
+
+.site-footer a:hover {
+    color: #3366cc;
+    text-decoration: none;
+}
+
+.footer-links {
+    padding-left: 0;
+    list-style: none;
+}
+
+.footer-links li {
+    display: block;
+}
+
+.footer-links a {
+    color: #737373;
+}
+
+.footer-links a:active,
+.footer-links a:focus,
+.footer-links a:hover {
+    color: #3366cc;
+    text-decoration: none;
+}
+
+.footer-links.inline li {
+    display: inline-block;
+}
+
+.site-footer .social-icons {
+    text-align: right;
+}
+
+.site-footer .social-icons a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 6px;
+    margin-right: 0;
+    border-radius: 100%;
+    background-color: #33353d;
+}
+
+.copyright-text {
+    margin: 0;
+}
+
+@media (max-width: 991px) {
+    .site-footer [class^="col-"] {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .site-footer {
+        padding-bottom: 0;
+    }
+
+    .site-footer .copyright-text,
+    .site-footer .social-icons {
+        text-align: center;
+    }
+}
+
+.social-icons {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.social-icons li {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.social-icons li.title {
+    margin-right: 15px;
+    text-transform: uppercase;
+    color: #96a2b2;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.social-icons a {
+    background-color: #eceeef;
+    color: #818a91;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 44px;
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    margin-right: 8px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+.social-icons a:active,
+.social-icons a:focus,
+.social-icons a:hover {
+    color: #fff;
+    background-color: #29aafe;
+}
+
+.social-icons.size-sm a {
+    line-height: 34px;
+    height: 34px;
+    width: 34px;
+    font-size: 14px;
+}
+
+.social-icons a.facebook:hover {
+    background-color: #3b5998;
+}
+
+.social-icons a.twitter:hover {
+    background-color: #00aced;
+}
+
+.social-icons a.linkedin:hover {
+    background-color: #007bb6;
+}
+
+.social-icons a.dribbble:hover {
+    background-color: #ea4c89;
+}
+
+@media (max-width: 767px) {
+    .social-icons li.title {
+        display: block;
+        margin-right: 0;
+        font-weight: 600;
+    }
+}
+
+.footer {
+    position: fixed;
+}

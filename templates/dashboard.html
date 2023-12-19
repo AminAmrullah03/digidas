@@ -11,6 +11,36 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
 
+    <style>
+        .card-margin {
+            margin-bottom: 20px;
+        }
+    
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .card-body {
+            flex-grow: 1;
+        }
+
+        /* @media (max-width: 600px) {
+        img {
+            width: 100%;
+            height: auto;
+        }
+        }
+        @media (min-width: 600px) {
+        img {
+            width: 600px;
+            height: auto;
+        }
+        } */
+    </style>
+    
+
 </head>
 
 <body>
@@ -25,13 +55,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="home">Home</a>
+                        <a class="nav-link menu" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="about">About</a>
+                        <a class="nav-link menu" href="/about">About</a>
                     </li>
                 </ul>
-                <a href="/login"><button class="btn tlogin" type="button">Sign In</button></a>
+                <a href="/login"><button class="btn tlogin" type="button">signOut</button></a>
             </div>
         </div>
     </nav>
@@ -43,19 +73,23 @@
             <hr />
         </div>
         <div id="nav-content">
-            <div class="nav-button"><i class="fas fa-list"></i><span>Pendataan Santri</span></div>
-            <div class="nav-button"><i class="fas fa-folder-open"></i><span>Inventaris Pesantren</span></div>
-            <div class="nav-button"><i class="fas fa-arrows-alt"></i><span>Mutasi Santri</span></div>
+            <div class="nav-button"><a href="/pendataan"><i class="fas fa-list"></i><span>Pendataan Santri</span></a></div>
+            <div class="nav-button"><a href="/inventaris"><i class="fas fa-folder-open"></i><span>Inventaris Pesantren</span></a></div>
+            <div class="nav-button"><a href="/mutasi"><i class="fas fa-arrows-alt"></i><span>Mutasi Santri</span></a></div>
             <hr />
-            <div class="nav-button"><i class="fas fa-book"></i><span>Jurnal</span></div>
-            <div class="nav-button"><i class="fas fa-bullseye"></i><span>Target</span></div>
-            <div class="nav-button"><i class="fas fa-info-circle"></i><span>Pengumuman</span></div>
+            <div class="nav-button"><a href="/jurnal"><i class="fas fa-book"></i><span>Jurnal</span></a></div>
+            <div class="nav-button"><a href="/target"><i class="fas fa-bullseye"></i><span>Target</span></a></div>
+            <div class="nav-button"><a href="/pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span></a></div>
+
+    
+            <div class="nav-button"><a href="/data_santri"><i class="fas fa-user"></i><span>Data Santri</span></a></div>
             <div id="nav-content-highlight"></div>
         </div>
+        
         <input id="nav-footer-toggle" type="checkbox" />
         <div id="nav-footer">
             <div id="nav-footer-heading">
-                <div id="nav-footer-avatar"><img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547" />
+                <div id="nav-footer-avatar"><a href="/profile"><img src="https://gravatar.com/avatar/4474ca42d303761c2901fa819c4f2547" /></a>
                 </div>
                 <div id="nav-footer-titlebox"><a id="nav-footer-title" href="#" target="_blank">Staff</a><span
                         id="nav-footer-subtitle">Admin</span></div>
@@ -69,6 +103,85 @@
     </div>
 
     <h1>Dashboard</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title">Pengumuman</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            {% for item in pengumuman %}
+                            <div class="widget-49-title-wrapper">
+
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">{{ item.judul }}</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>{{ item.isi }}</span></li>
+                                </li>
+                            </ol>
+                            {% endfor %}
+                            <div class="widget-49-meeting-action">
+                                <a href="/pengumuman" class="btn btn-warning btn-sm">View All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title">Target</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            {% for item in target %}
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">{{ item.judul }}</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>{{ item.isi }}</span></li>
+                            </ol>
+                            {% endfor %}
+                            <div class="widget-49-meeting-action">
+                                <a href="/target" class="btn btn-warning btn-sm">View All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title">Pelanggaran</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            {% for item in pelanggaran %}
+                            <div class="widget-49-title-wrapper">
+
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">{{ item.nama }}</span>
+                                    <span class="widget-49-meeting-time">{{ item.nis }}</span>
+                                    <span class="widget-49-meeting-time">{{ item.jenis_pelanggaran }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="widget-49-meeting-action">
+                                <a href="/data_pelanggaran" class="btn btn-warning btn-sm">View All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <a href="pendataan" style="text-decoration:none;">
             <figure>
@@ -97,19 +210,21 @@
             </figure>
         </a>
         <a href="target" style="text-decoration:none;">
-        <figure>
-            <img src="/static/pic/Target.png" alt="Target" href="target.html">
-            <figcaption>Target</figcaption>
-        </figure>
+            <figure>
+                <img src="/static/pic/Target.png" alt="Target" href="target.html">
+                <figcaption>Target</figcaption>
+            </figure>
         </a>
         <a href="pengumuman" style="text-decoration:none;">
-        <figure>
-            <img src="/static/pic/Pengumuman.png" alt="Pengumuman" href="pengumuman.html">
-            <figcaption style="font-size: 2rem;">Pengumuman</figcaption>
-        </figure>
+            <figure>
+                <img src="/static/pic/Pengumuman.png" alt="Pengumuman" href="pengumuman.html">
+                <figcaption style="font-size: 2rem;">Pengumuman</figcaption>
+            </figure>
         </a>
+
     </div>
 
 </body>
+
 
 </html>

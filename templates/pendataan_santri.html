@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/static/css/pendataan_santri.css">
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JavaScript Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <title>Document</title>
 
 </head>
@@ -25,36 +28,50 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/index.html">Home</a>
-                    <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/dashboard.html">Dashboard</a>
+                        <a class="nav-link menu" href="/dashboard">Dashboard</a>
                     </li>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu" href="/templates/about.html">About</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pendataan
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <!-- Dropdown menu -->
+                            <a class="dropdown-item" href="/inventaris">Inventaris</a> 
+                            <a class="dropdown-item" href="/mutasi">Mutasi</a> 
+                            <div class="dropdown-divider"></div> 
+                            <a class="dropdown-item" href="/jurnal">Jurnal</a> <!-- Item dropdown -->
+                            <a class="dropdown-item" href="/target">Target</a>
+                            <a class="dropdown-item" href="/pengumuman">Pengumuman</a>
+                            <a class="dropdown-item" href="/data_santri">Data Santri</a>
+                        </div>
                     </li>
                 </ul>
-                <a href="/login"><button class="btn tlogin" type="button">Sign In</button></a>
             </div>
+            
         </div>
     </nav>
 
         <h1>Pendataan Santri</h1>
         <div class="container">
-            <a href="perizinan" style="text-decoration:none;">
+            <a href="data_izin" style="text-decoration:none;">
             <figure>
                 <img src="/static/pic/Perizinan.png" alt="Perizinan" href="izin_keluar.html">
                 <figcaption>Perizinan Santri</figcaption>
             </figure>
             </a>
+
+            <a href="data_pelanggaran" style="text-decoration:none;">
             <figure>
                 <img src="/static/pic/Pelanggaran.png" alt="Pelanggaran" href="pelanggaran.html">
                 <figcaption>Pelanggaran Santri</figcaption>
             </figure>
+            </a>
+
+            <a href="data_pulang" style="text-decoration:none;">
             <figure>
                 <img src="/static/pic/Kepulangan.png" alt="Kepulangan" href="data_pulang.html">
                 <figcaption>Kepulangan Santri</figcaption>
             </figure>
+            </a>
         </div>
 
 </body>
