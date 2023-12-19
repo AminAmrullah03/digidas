@@ -25,6 +25,13 @@ body {
     width: 60px;
     margin-left: 20px;
 }
+.menu {
+    text-decoration: none;
+    margin: 0 0.7vw;
+    color: #bea42e;
+    font-family: Philosopher;
+    font-size: x-large;
+}
 
 .menu {
     text-decoration: none;

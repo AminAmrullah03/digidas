@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/static/css/pendataan_santri.css">
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JavaScript Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <title>Document</title>
 
 </head>
@@ -27,12 +30,23 @@
                     <li class="nav-item">
                         <a class="nav-link menu" href="/dashboard">Dashboard</a>
                     </li>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu" href="/about">About</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle menu" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pendataan
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <!-- Dropdown menu -->
+                            <a class="dropdown-item" href="/inventaris">Inventaris</a> 
+                            <a class="dropdown-item" href="/mutasi">Mutasi</a> 
+                            <div class="dropdown-divider"></div> 
+                            <a class="dropdown-item" href="/jurnal">Jurnal</a> <!-- Item dropdown -->
+                            <a class="dropdown-item" href="/target">Target</a>
+                            <a class="dropdown-item" href="/pengumuman">Pengumuman</a>
+                            <a class="dropdown-item" href="/data_santri">Data Santri</a>
+                        </div>
                     </li>
                 </ul>
             </div>
+            
         </div>
     </nav>
 
