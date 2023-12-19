@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Document</title>
     <script>
-                $(function () {
+        $(function () {
             $('#newpost').click(function () {
                 $('#newPost').fadeIn();
             });
@@ -53,25 +53,25 @@
             });
         });
 
-        
-    
+
+
         function cancel() {
             $('#newPost').fadeOut();
         }
-        
-    
+
+
         function editTarget(targetId, judul, isi) {
 
-                $('#editTargetId').val(targetId);
-                $('#editJudul').val(judul);
-                $('#editIsi').val(isi);
-                $('#editArticleModal').fadeIn();
-            }
-    
+            $('#editTargetId').val(targetId);
+            $('#editJudul').val(judul);
+            $('#editIsi').val(isi);
+            $('#editArticleModal').fadeIn();
+        }
+
         function cancelEdit() {
             $('#editArticleModal').fadeOut();
         }
-    
+
         function deleteTarget(targetId, judul) {
             Swal.fire({
                 title: 'Sudah yakin?',
@@ -86,21 +86,21 @@
                     fetch('/delete_target/' + targetId, {
                         method: 'DELETE',
                     })
-                    .then(response => {
-                        if (response.ok) {
-                            // Reload the page after successful deletion
-                            window.location.reload();
-                        } else {
-                            // Handle error
-                            console.error('Deletion failed');
-                        }
-                    })
-                    .catch(error => console.error('Error during deletion:', error));
+                        .then(response => {
+                            if (response.ok) {
+                                // Reload the page after successful deletion
+                                window.location.reload();
+                            } else {
+                                // Handle error
+                                console.error('Deletion failed');
+                            }
+                        })
+                        .catch(error => console.error('Error during deletion:', error));
                 }
             });
         }
     </script>
-    
+
 </head>
 
 <body>
@@ -115,10 +115,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">Home</a>
+                        <a class="nav-link menu" href="dashboard">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu" href="#">About</a>
+                        <a class="nav-link menu" href="about">About</a>
                     </li>
                 </ul>
             </div>
@@ -158,29 +158,36 @@
     </div>
     <div class="ag-format-container">
         <div class="ag-courses_box">
-          <div class="ag-courses_item">
-            <a href="#" class="ag-courses-item_link">
-              <div class="ag-courses-item_bg"></div>
-                {% for entry in data %}
-                <div class="ag-courses-item_title">{{ entry.judul }}</div>          
-                  <div class="ag-courses-description">{{ entry.isi }}</div>
-                  <button class="btn btn-warning"
-                            onclick="editTarget('{{ entry._id }}', '{{ entry.judul }}', '{{ entry.isi }}')">Edit</button>
-                        <button style="margin-left: 20px;" class="btn btn-danger"
-                            onclick="deleteTarget('{{ entry._id }}', '{{ entry.judul }}')">Delete</button>
-                  </div>
-                </a>
-                    </div>
+            <div class="ag-courses_item">
+                <a href="#" class="ag-courses-item_link">
+                    <div class="ag-courses-item_bg"></div>
+                    {% for entry in data %}
+                    <div class="ag-courses-item_title">{{ entry.judul }}</div>
+                    <div class="ag-courses-description">{{ entry.isi }}</div>
+                    <button class="btn btn-warning"
+                        onclick="editTarget('{{ entry._id }}', '{{ entry.judul }}', '{{ entry.isi }}')">Edit</button>
+                    <button style="margin-left: 20px;" class="btn btn-danger"
+                        onclick="deleteTarget('{{ entry._id }}', '{{ entry.judul }}')">Delete</button>
+                    </span>
                 </div>
-                {% endfor %}
+              </a>
             </div>
+        {% endfor %}          
+    </div>
         </div>
-    
-    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551; margin-top: 150px;">
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-white" style="background-color: #3e4551">
+        <!-- Grid container -->
         <div class="container p-4 pb-0">
+            <!-- Section: Links -->
             <section class="">
+                <!--Grid row-->
                 <div class="row">
+                    <!--Grid column-->
                     <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+
                         <p>
                             <li>Alfin Gunawan</li>
                             <li>Ahmad Amin Amrullah</li>
@@ -188,24 +195,43 @@
                             <li>Daffara Chairunnisa Zhuliani</li>
                         </p>
                     </div>
+                    <!--Grid column-->
                 </div>
+                <!--Grid row-->
             </section>
+            <!-- Section: Links -->
+
             <hr class="mb-4" />
+
+            <!-- Section: Social media -->
             <section class="mb-4 text-center">
+                <!-- Facebook -->
                 <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
                         class="fab fa-facebook"></i>
                 </a>
+
+                <!-- Instagram -->
                 <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
                         class="fab fa-instagram"></i></a>
+
+                <!-- Github -->
                 <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/AminAmrullah03/digidas.git"
                     role="button"><i class="fab fa-github"></i></a>
             </section>
+            <!-- Section: Social media -->
         </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
             © 2023 Copyright:
             <a class="text-white" href="#">DIGIDAS</a>
         </div>
+        <!-- Copyright -->
     </footer>
+    <!-- Footer -->
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
